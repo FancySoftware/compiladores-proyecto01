@@ -18,7 +18,8 @@ KEYWORD (False|class|finally|is|return|None|continue|for|lambda|try|True|def|fro
 
 %%
 
-{KEYWORD} std::cout << toUpper(yytext); 
+{KEYWORD} 	std::cout << toUpper(yytext);
+{NONZERODIGIT}+{DIGIT}* 	std::cout << "'eto eh un numero: " << yytext;
 
 %%
 
