@@ -29,7 +29,8 @@ std::string toUpper(std::string original) {
     return original;
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]){
+    extern FILE* yyin;
+    yyin=fopen(argv[1],"r");
     yylex();
 }
