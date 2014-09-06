@@ -13,14 +13,14 @@ std::string toUpper(std::string);
 
 DIGIT [0-9]
 NONZERODIGIT [1-9]
-
-KEYWORD (False|class|finally|is|return|None|continue|for|lambda|try|True|def|from|nonlocal|while|and|del|global|not|with|as|elif|if|or|yield|assert|else|import|pass|break|except|in|raise)
+IDENTIFIER [a-zA-Z][0-9]*
+KEYWORD (print|False|class|finally|is|return|None|continue|for|lambda|try|True|def|from|nonlocal|while|and|del|global|not|with|as|elif|if|or|yield|assert|else|import|pass|break|except|in|raise)
 
 %%
 
 {KEYWORD} 	std::cout << toUpper(yytext);
-{NONZERODIGIT}+{DIGIT}* 	std::cout << "'eto eh un numero: " << yytext;
-
+{NONZERODIGIT}+{DIGIT}* 	std::cout << "NUMBER";
+{IDENTIFIER} std::cout << "IDENTIFIER";
 %%
 
 std::string toUpper(std::string original) {
