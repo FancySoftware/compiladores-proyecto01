@@ -11,6 +11,10 @@ std::string toUpper(std::string);
 %option noyywrap
 %option outfile="pylex.cpp"
 
+NEWLINE \n
+
+SPACE \ .
+
 DIGIT [0-9]
 NONZERODIGIT [1-9]
 NUMBER \-?{NONZERODIGIT}{DIGIT}*
@@ -22,10 +26,13 @@ STRING \"{STRINGITEM}*\"
 KEYWORD (print|False|class|finally|is|return|None|continue|for|lambda|try|True|def|from|nonlocal|while|and|del|global|not|with|as|elif|if|or|yield|assert|else|import|pass|break|except|in|raise)
 IDENTIFIER [a-zA-Z][0-9]*
 %%
-{STRING}	std::cout << "STRING:" << yytext;
-{KEYWORD}	std::cout << "KEYWORD: " << toUpper(yytext);
-{NUMBER} 	std::cout << "NUMBER: " << yytext;
-{IDENTIFIER} std::cout << "IDENTIFIER: " << yytext;
+{NEWLINE}{SPACE}	std::cout << "FAKEINDENT"; 
+{SPACE} 			yyless(1);
+{NEWLINE} 			std::cout << "NEWLINE";
+{STRING}			std::cout << "STRING";
+{KEYWORD}			std::cout << toUpper(yytext);
+{NUMBER} 			std::cout << "NUMBER";
+{IDENTIFIER} 		std::cout << "IDENTIFIER";
 %%
 
 std::string toUpper(std::string original) {
