@@ -13,11 +13,19 @@ std::string toUpper(std::string);
 
 DIGIT [0-9]
 NONZERODIGIT [1-9]
-KEYWORD (print|False|class|finally|is|return|None|continue|for|lambda|try|True|def|from|nonlocal|while|and|del|global|not|with|as|elif|if|or|yield|assert|else|import|pass|break|except|in|raise)
+NUMBER \-?{NONZERODIGIT}{DIGIT}*
 
+SPECIALSTRING [\"\n\t\\\r\ ]
+STRINGITEM ([a-zA-Z0-9]|{SPECIALSTRING})
+STRING \"{STRINGITEM}*\"
+
+KEYWORD (print|False|class|finally|is|return|None|continue|for|lambda|try|True|def|from|nonlocal|while|and|del|global|not|with|as|elif|if|or|yield|assert|else|import|pass|break|except|in|raise)
+IDENTIFIER [a-zA-Z][0-9]*
 %%
+{STRING}	std::cout << "STRING:" << yytext;
 {KEYWORD}	std::cout << "KEYWORD: " << toUpper(yytext);
 {NUMBER} 	std::cout << "NUMBER: " << yytext;
+{IDENTIFIER} std::cout << "IDENTIFIER: " << yytext;
 %%
 
 std::string toUpper(std::string original) {
