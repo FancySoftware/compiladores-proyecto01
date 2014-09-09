@@ -19,7 +19,7 @@ SPACE \ .
 
 DIGIT [0-9]
 NONZERODIGIT [1-9]
-NUMBER \-?{NONZERODIGIT}{DIGIT}*
+NUMBER ({INTEGER}|{FLOAT})
 
 SPECIALSTRING [\"\n\t\\\r\ ]
 STRINGITEM ([a-zA-Z0-9]|{SPECIALSTRING})
@@ -53,9 +53,7 @@ EXPONENT ([E|e][+|-]?{DIGIT}+)
 {NEWLINE} 			std::cout << "NEWLINE \n";
 {STRING}			std::cout << "STRING ";
 {KEYWORD}			std::cout << toUpper(yytext) +" ";
-{INTEGER}			std::cout << "INTEGER ";
 {NUMBER}			std::cout << "NUMBER ";
-{FLOAT}				std::cout << "FLOAT ";
 {IDENTIFIER} 		std::cout << "IDENTIFIER ";
 %%
 
