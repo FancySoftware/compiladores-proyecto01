@@ -39,6 +39,16 @@ AUX3 ({INTPART}|{POINTFLOAT})
 EXPONENTFLOAT ({AUX3}|{EXPONENT})
 FLOAT ({POINTFLOAT}|{EXPONENTFLOAT})
 
+INTEGER ({DECIMAL}|{BINARY}|{OCTAL}|{HEXADECIMAL})
+DECIMAL (({NONZERODIGIT}{DIGIT}*)|(0+))
+OCTAL (0(o|O){OCTDIGIT}+)
+HEXADECIMAL(0(x|X){HEXDIGIT}+)
+BINARY (0(b|B){BINDIGIT}+)
+BINDIGIT (0|1)
+OCTDIGIT ([0-7])
+HEXDIGIT ({DIGIT}|[a-f]|[A-F])
+
+
 %%
 {COMMENT}
 {NEWLINE}{SPACE}		std::cout << "FAKEINDENT "; 
@@ -46,6 +56,7 @@ FLOAT ({POINTFLOAT}|{EXPONENTFLOAT})
 {NEWLINE} 			std::cout << "NEWLINE \n";
 {STRING}			std::cout << "STRING ";
 {KEYWORD}			std::cout << toUpper(yytext) +" ";
+{INTEGER}			std::cout << "INTEGER ";
 {NUMBER}			std::cout << "NUMBER ";
 {FLOAT}				std::cout << "FLOAT ";
 {IDENTIFIER} 			std::cout << "IDENTIFIER ";
