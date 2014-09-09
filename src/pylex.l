@@ -28,26 +28,22 @@ STRING \"{STRINGITEM}*\"
 KEYWORD (print|False|class|finally|is|return|None|continue|for|lambda|try|True|def|from|nonlocal|while|and|del|global|not|with|as|elif|if|or|yield|assert|else|import|pass|break|except|in|raise)
 IDENTIFIER [a-zA-Z|_][a-z|A-Z|0-9|_]*
 
-
-EXPONENT ([E|e][+|-]*{DIGIT}+)
-FRACTION ("."{DIGIT}+)
-INTPART ({DIGIT}+)
-AUX ({INTPART}".")
-AUX2 ({INTPART}{FRACTION})
-POINTFLOAT ({AUX}|{AUX2}) 
-AUX3 ({INTPART}|{POINTFLOAT})
-EXPONENTFLOAT ({AUX3}|{EXPONENT})
-FLOAT ({POINTFLOAT}|{EXPONENTFLOAT})
-
 INTEGER ({DECIMAL}|{BINARY}|{OCTAL}|{HEXADECIMAL})
 DECIMAL (({NONZERODIGIT}{DIGIT}*)|(0+))
-OCTAL (0(o|O){OCTDIGIT}+)
+OCTAL (0(o|O){OCTDIGIT}+)|(0{OCTDIGIT}+)
 HEXADECIMAL(0(x|X){HEXDIGIT}+)
 BINARY (0(b|B){BINDIGIT}+)
 BINDIGIT (0|1)
 OCTDIGIT ([0-7])
 HEXDIGIT ({DIGIT}|[a-f]|[A-F])
 
+FLOAT ({POINTFLOAT}|{EXPONENTFLOAT})
+POINTFLOAT ({INTPART}{FRACTION}|{INTPART}".")
+AUX ({INTPART}|{POINTFLOAT})
+EXPONENTFLOAT  ({AUX}{EXPONENT})
+INTPART ({DIGIT}+)
+FRACTION ("."{DIGIT}+)
+EXPONENT ([E|e][+|-]*{DIGIT}+)
 
 %%
 {COMMENT}
