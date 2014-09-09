@@ -26,16 +26,16 @@ STRINGITEM ([a-zA-Z0-9]|{SPECIALSTRING})
 STRING \"{STRINGITEM}*\"
 
 KEYWORD (print|False|class|finally|is|return|None|continue|for|lambda|try|True|def|from|nonlocal|while|and|del|global|not|with|as|elif|if|or|yield|assert|else|import|pass|break|except|in|raise)
-IDENTIFIER [a-zA-Z0-9]+
+IDENTIFIER [a-zA-Z|_][a-zA-Z0-9_]*
 %%
 {COMMENT}
-{NEWLINE}{SPACE}	std::cout << "FAKEINDENT"; 
+{NEWLINE}{SPACE}	std::cout << "FAKEINDENT "; 
 {SPACE} 			yyless(1);
-{NEWLINE} 			std::cout << "NEWLINE";
-{STRING}			std::cout << "STRING";
-{KEYWORD}			std::cout << toUpper(yytext);
-{NUMBER} 			std::cout << "NUMBER";
-{IDENTIFIER} 		std::cout << "IDENTIFIER";
+{NEWLINE} 			std::cout << "NEWLINE \n";
+{STRING}			std::cout << "STRING ";
+{KEYWORD}			std::cout << toUpper(yytext) +" ";
+{NUMBER} 			std::cout << "NUMBER ";
+{IDENTIFIER} 		std::cout << "IDENTIFIER ";
 %%
 
 std::string toUpper(std::string original) {
