@@ -47,7 +47,7 @@ EXPONENT ([E|e][+|-]?{DIGIT}+)
 
 %%
 {COMMENT}
-{NEWLINE}{SPACE}		std::cout << "FAKEINDENT "; 
+{NEWLINE}{SPACE}	std::cout << "FAKEINDENT "; 
 {SPACE} 			yyless(1);
 {NEWLINE} 			std::cout << "NEWLINE \n";
 {STRING}			std::cout << "STRING ";
@@ -55,7 +55,7 @@ EXPONENT ([E|e][+|-]?{DIGIT}+)
 {INTEGER}			std::cout << "INTEGER ";
 {NUMBER}			std::cout << "NUMBER ";
 {FLOAT}				std::cout << "FLOAT ";
-{IDENTIFIER} 			std::cout << "IDENTIFIER ";
+{IDENTIFIER} 		std::cout << "IDENTIFIER ";
 %%
 
 std::string toUpper(std::string original) {
