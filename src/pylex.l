@@ -45,6 +45,7 @@ INTPART ({DIGIT}+)
 FRACTION ("."{DIGIT}+)
 EXPONENT ([E|e][+|-]?{DIGIT}+)
 
+
 %%
 {COMMENT}
 {NEWLINE}{SPACE}		std::cout << "FAKEINDENT "; 
