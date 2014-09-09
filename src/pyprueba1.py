@@ -7,3 +7,12 @@ if 3 > 1:
     print x
 else:
    x = "Hello 10 world 15"
+#Prueba de float
+10.7
+5.6
+35.4
+1.5
+1e100
+0.001
+10.
+3.14

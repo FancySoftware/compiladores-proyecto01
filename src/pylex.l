@@ -28,6 +28,17 @@ STRING \"{STRINGITEM}*\"
 KEYWORD (print|False|class|finally|is|return|None|continue|for|lambda|try|True|def|from|nonlocal|while|and|del|global|not|with|as|elif|if|or|yield|assert|else|import|pass|break|except|in|raise)
 IDENTIFIER [a-zA-Z|_][a-z|A-Z|0-9|_]*
 
+
+EXPONENT ([E|e][+|-]*{DIGIT}+)
+FRACTION ("."{DIGIT}+)
+INTPART ({DIGIT}+)
+AUX ({INTPART}".")
+AUX2 ({INTPART}{FRACTION})
+POINTFLOAT ({AUX}|{AUX2}) 
+AUX3 ({INTPART}|{POINTFLOAT})
+EXPONENTFLOAT ({AUX3}|{EXPONENT})
+FLOAT ({POINTFLOAT}|{EXPONENTFLOAT})
+
 %%
 {COMMENT}
 {NEWLINE}{SPACE}		std::cout << "FAKEINDENT "; 
@@ -35,7 +46,8 @@ IDENTIFIER [a-zA-Z|_][a-z|A-Z|0-9|_]*
 {NEWLINE} 			std::cout << "NEWLINE \n";
 {STRING}			std::cout << "STRING ";
 {KEYWORD}			std::cout << toUpper(yytext) +" ";
-{NUMBER} 			std::cout << "NUMBER ";
+{NUMBER}			std::cout << "NUMBER ";
+{FLOAT}				std::cout << "FLOAT ";
 {IDENTIFIER} 			std::cout << "IDENTIFIER ";
 %%
 
