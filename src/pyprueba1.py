@@ -1,10 +1,10 @@
 #Comentario
 if 3 > 1:
-  x = -4
-  while x < 2:#COMENTARIO
-    x+=1
-    #COMENTARIO
-    print x
+	x = -4
+	while x < 2:#COMENTARIO 
+		x+=1
+		#COMENTARIO
+    	print x
 else:
    x = "Hello 10 world 15"
 
@@ -25,7 +25,5 @@ else:
 1e+100
 3.14e10
 0e0
-
 if True:
-     
-   print "HOla"
+	print "HOla   como estas"

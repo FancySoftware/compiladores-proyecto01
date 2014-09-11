@@ -10,10 +10,11 @@ std::string toUpper(std::string);
 
 %option noyywrap
 %option outfile="pylex.cpp"
+%x String
 
 COMMENT #(.)*\n
 
-NEWLINE \n
+NEWLINE [\n\ .]
 
 SPACE \ .
 
@@ -21,9 +22,9 @@ DIGIT [0-9]
 NONZERODIGIT [1-9]
 NUMBER ({INTEGER}|{FLOAT})
 
-SPECIALSTRING [\"\n\t\\\r\ ]
+SPECIALSTRING [\"\t\\\r\ ]
 STRINGITEM ([a-zA-Z0-9]|{SPECIALSTRING})
-STRING \"{STRINGITEM}*\"
+STRING {STRINGITEM}*\"
 
 KEYWORD (print|False|class|finally|is|return|None|continue|for|lambda|try|True|def|from|nonlocal|while|and|del|global|not|with|as|elif|if|or|yield|assert|else|import|pass|break|except|in|raise)
 IDENTIFIER [a-zA-Z|_][a-z|A-Z|0-9|_]*
@@ -47,11 +48,16 @@ EXPONENT ([E|e][+|-]?{DIGIT}+)
 
 
 %%
-{COMMENT}
-{NEWLINE}{SPACE}	std::cout << "FAKEINDENT "; 
+
 {SPACE} 			yyless(1);
+{COMMENT}
 {NEWLINE} 			std::cout << "NEWLINE \n";
-{STRING}			std::cout << "STRING ";
+{NEWLINE}{SPACE}	std::cout << "FAKEINDENT "; 
+{NEWLINE}{SPACE}*{NEWLINE} 
+
+\"					BEGIN(String);
+<String>{STRING}	std::cout << "STRING ";BEGIN(INITIAL);
+<String>\n 			std::cout << "\n\n ERROR LA CADENA NO ESTA TERMINADA\n "; return 0;
 {KEYWORD}			std::cout << toUpper(yytext) +" ";
 {NUMBER}			std::cout << "NUMBER ";
 {IDENTIFIER} 		std::cout << "IDENTIFIER ";
