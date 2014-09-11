@@ -49,18 +49,17 @@ EXPONENT ([E|e][+|-]?{DIGIT}+)
 
 %%
 
-{SPACE} 			yyless(1);
+{SPACE} 				yyless(1);
 {COMMENT}
-{NEWLINE} 			std::cout << "NEWLINE \n";
-{NEWLINE}{SPACE}	std::cout << "FAKEINDENT "; 
+{NEWLINE} 				std::cout << "NEWLINE \n";
 {NEWLINE}{SPACE}*{NEWLINE} 
-
-\"					BEGIN(String);
-<String>{STRING}	std::cout << "STRING ";BEGIN(INITIAL);
-<String>\n 			std::cout << "\n\n ERROR LA CADENA NO ESTA TERMINADA\n "; return 0;
-{KEYWORD}			std::cout << toUpper(yytext) +" ";
-{NUMBER}			std::cout << "NUMBER ";
-{IDENTIFIER} 		std::cout << "IDENTIFIER ";
+{NEWLINE}{SPACE}		std::cout << "FAKEINDENT "; 
+\"						BEGIN(String);
+<String>{STRING}		std::cout << "STRING ";BEGIN(INITIAL);
+<String>\n 				std::cout << "\n\n ERROR LA CADENA NO ESTA TERMINADA\n "; return 0;
+{KEYWORD}				std::cout << toUpper(yytext) +" ";
+{NUMBER}				std::cout << "NUMBER ";
+{IDENTIFIER} 			std::cout << "IDENTIFIER ";
 %%
 
 std::string toUpper(std::string original) {
