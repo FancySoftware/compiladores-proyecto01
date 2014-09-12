@@ -5,7 +5,7 @@ if 3 > 1:
 		x+=1
 		#COMENTARIO
     	print x
-else:
+else: #COMENTARIO FALSO
    x = "Hello 10 world 15"
 
 #Prueba de integer

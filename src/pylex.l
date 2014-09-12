@@ -12,23 +12,14 @@ std::string toUpper(std::string);
 %option outfile="pylex.cpp"
 %x String
 
-
-COMMENT #(.)*\n
-
-NEWLINE [\n\ .]
-
-SPACE \ .
+COMMENT (#.*)
+NEWLINE [\n]
+SPACE [\ ]
+TAB (\t|\ +)
 
 DIGIT [0-9]
 NONZERODIGIT [1-9]
 NUMBER ({INTEGER}|{FLOAT})
-
-SPECIALSTRING [\"\t\\\r\ ]
-STRINGITEM ([a-zA-Z0-9]|{SPECIALSTRING})
-STRING {STRINGITEM}*\"
-
-KEYWORD (print|False|class|finally|is|return|None|continue|for|lambda|try|True|def|from|nonlocal|while|and|del|global|not|with|as|elif|if|or|yield|assert|else|import|pass|break|except|in|raise)
-IDENTIFIER [a-zA-Z|_][a-z|A-Z|0-9|_]*
 
 INTEGER ({DECIMAL}|{BINARY}|{OCTAL}|{HEXADECIMAL})
 DECIMAL (({NONZERODIGIT}{DIGIT}*)|(0+))
@@ -47,20 +38,24 @@ INTPART ({DIGIT}+)
 FRACTION ("."{DIGIT}+)
 EXPONENT ([E|e][+|-]?{DIGIT}+)
 
+KEYWORD (print|False|class|finally|is|return|None|continue|for|lambda|try|True|def|from|nonlocal|while|and|del|global|not|with|as|elif|if|or|yield|assert|else|import|pass|break|except|in|raise)
+IDENTIFIER [a-zA-Z|_][a-zA-Z0-9_]*
 
+SPECIALSTRING [\"\t\\\r\ ]
+STRINGITEM ([a-zA-Z0-9]|{SPECIALSTRING})
+STRING {STRINGITEM}*\"
 %%
 
-{SPACE} 				yyless(1);
-{COMMENT}								
-{NEWLINE} 				std::cout << "NEWLINE \n";
-{NEWLINE}{SPACE}*{NEWLINE} 
-{NEWLINE}{SPACE}		std::cout << "FAKEINDENT "; 
-\"						BEGIN(String);
-<String>{STRING}		std::cout << "STRING ";BEGIN(INITIAL);
-<String>\n 				std::cout << "\n\n ERROR LA CADENA NO ESTA TERMINADA\n "; return 0;
-{KEYWORD}				std::cout << toUpper(yytext) +" ";
-{NUMBER}				std::cout << "NUMBER ";
-{IDENTIFIER} 			std::cout << "IDENTIFIER ";
+{COMMENT}  
+{NEWLINE}{SPACE}*{NEWLINE}
+{NEWLINE}{TAB}		std::cout <<"NEWLINE\n taaab";yyless(1);
+{NEWLINE} 			std::cout << "NEWLINE \n";
+{NUMBER}			std::cout << "NUMBER ";
+{KEYWORD}			std::cout << toUpper(yytext);
+{IDENTIFIER}		std::cout << "IDENTIFIER ";
+\"					BEGIN(String);
+<String>{STRING}	std::cout << "STRING ";BEGIN(INITIAL);
+<String>\n 			std::cout << "\n\n ERROR LA CADENA NO ESTA TERMINADA\n "; return 0;
 %%
 
 std::string toUpper(std::string original) {
