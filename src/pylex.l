@@ -11,6 +11,7 @@ std::string toUpper(std::string);
 %option noyywrap
 %option outfile="pylex.cpp"
 %x String
+%x INICIADO
 
 COMMENT (#.*)
 NEWLINE [\n]
@@ -45,15 +46,17 @@ SPECIALSTRING [\"\t\\\r\ ]
 STRINGITEM ([a-zA-Z0-9]|{SPECIALSTRING})
 STRING {STRINGITEM}*\"
 %%
-
-{COMMENT}  
-{NEWLINE}{SPACE}*{NEWLINE}
-{NEWLINE}{TAB}		std::cout <<"NEWLINE\n taaab";yyless(1);
-{NEWLINE} 			std::cout << "NEWLINE \n";
-{NUMBER}			std::cout << "NUMBER ";
-{KEYWORD}			std::cout << toUpper(yytext);
-{IDENTIFIER}		std::cout << "IDENTIFIER ";
-\"					BEGIN(String);
+{COMMENT}
+{NEWLINE}
+. 			BEGIN(INICIADO);yyless(1);
+<INICIADO>{COMMENT} 
+<INICIADO>{NEWLINE}{SPACE}*{NEWLINE}
+<INICIADO>{NEWLINE}{TAB}		std::cout <<"NEWLINE\n taaab";yyless(1);
+<INICIADO>{NEWLINE} 			std::cout << "NEWLINE \n";
+<INICIADO>{NUMBER}			std::cout << "NUMBER ";
+<INICIADO>{KEYWORD}			std::cout << toUpper(yytext);
+<INICIADO>{IDENTIFIER}		std::cout << "IDENTIFIER ";
+<INICIADO>\"					BEGIN(String);
 <String>{STRING}	std::cout << "STRING ";BEGIN(INITIAL);
 <String>\n 			std::cout << "\n\n ERROR LA CADENA NO ESTA TERMINADA\n "; return 0;
 %%
