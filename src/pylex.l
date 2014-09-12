@@ -51,7 +51,7 @@ EXPONENT ([E|e][+|-]?{DIGIT}+)
 %%
 
 {SPACE} 				yyless(1);
-{COMMENT}				
+{COMMENT}								
 {NEWLINE} 				std::cout << "NEWLINE \n";
 {NEWLINE}{SPACE}*{NEWLINE} 
 {NEWLINE}{SPACE}		std::cout << "FAKEINDENT "; 
