@@ -15,8 +15,7 @@ else:
 0x377e
 0b101010101
 0x10010101
-0Xdeeadbe
-
+0xaaa
 
 #Prueba de float
 3.14
@@ -27,3 +26,9 @@ else:
 0e0
 if True:
 	print "HOla   como estas"
+
+
+num = 2
+while num < 11: #COmentario feo
+	if num % 2 == 0:
+		print num, "es par"

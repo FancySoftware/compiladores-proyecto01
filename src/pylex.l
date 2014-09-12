@@ -12,6 +12,7 @@ std::string toUpper(std::string);
 %option outfile="pylex.cpp"
 %x String
 
+
 COMMENT #(.)*\n
 
 NEWLINE [\n\ .]
@@ -50,7 +51,7 @@ EXPONENT ([E|e][+|-]?{DIGIT}+)
 %%
 
 {SPACE} 				yyless(1);
-{COMMENT}
+{COMMENT}				
 {NEWLINE} 				std::cout << "NEWLINE \n";
 {NEWLINE}{SPACE}*{NEWLINE} 
 {NEWLINE}{SPACE}		std::cout << "FAKEINDENT "; 
