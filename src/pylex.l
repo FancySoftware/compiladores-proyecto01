@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <locale>
+#include <stdlib.h>
 #include "pila.h"
 
 std::locale loc;
@@ -58,8 +59,8 @@ STRING {STRINGITEM}*\"
 
 <INICIADO>{COMMENT}
 <INICIADO>{NEWLINE}({SPACE}|{TAB})*{NEWLINE}
-<INICIADO>{NEWLINE}({SPACE}|{TAB})+		std::cout << getIndents(yytext);
-<INICIADO>{NEWLINE} 					std::cout << getIndents("") << "NEWLINE \n";
+<INICIADO>{NEWLINE}({SPACE}|{TAB})+		std::cout << "NEWLINE \n" << getIndents(yytext);
+<INICIADO>{NEWLINE} 					std::cout << "NEWLINE \n" << getIndents("");
 <INICIADO>{NUMBER}						std::cout << "NUMBER ";
 <INICIADO>{KEYWORD}						std::cout << toUpper(yytext);
 <INICIADO>{IDENTIFIER}					std::cout << "IDENTIFIER ";
@@ -84,12 +85,29 @@ std::string getIndents(std::string espacios) {
 			numEspacios += 4;
 		}
 	}
-	std::cout << "\nHay " << numEspacios << " espacios";
-	return "";
+	if(pilaIndent.top() == numEspacios) {
+		return "";
+	}
+	if(pilaIndent.top() < numEspacios) {
+		pilaIndent.push(numEspacios);
+		return "INDENT ";
+	}
+	std::string dedents = "";
+	while(pilaIndent.top() != 0) {
+		if(pilaIndent.top() > numEspacios) {
+			pilaIndent.pop();
+			dedents += "DEDENT ";
+		} else if (pilaIndent.top() < numEspacios) {
+			std::cout << "\nFalla en la indentación\n";
+			exit(EXIT_FAILURE);
+		}
+	}
+	return dedents;
 }
 
 int main(int argc, char *argv[]){
     extern FILE* yyin;
     yyin=fopen(argv[1],"r");
+    pilaIndent.push(0);
     yylex();
 }
