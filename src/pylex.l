@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <locale>
+#include "pila.h"
 
 std::locale loc;
 std::string toUpper(std::string);
@@ -46,19 +47,22 @@ SPECIALSTRING [\"\t\\\r\ ]
 STRINGITEM ([a-zA-Z0-9]|{SPECIALSTRING})
 STRING {STRINGITEM}*\"
 %%
+
 {COMMENT}
 {NEWLINE}
-. 			{yyless(0);BEGIN(INICIADO);}
-<INICIADO>{COMMENT} 
+. 										{yyless(0);BEGIN(INICIADO);}
+
+<INICIADO>{COMMENT}
 <INICIADO>{NEWLINE}{SPACE}*{NEWLINE}
-<INICIADO>{NEWLINE}{TAB}		std::cout <<"NEWLINE\n taaab";yyless(1);
-<INICIADO>{NEWLINE} 			std::cout << "NEWLINE \n";
-<INICIADO>{NUMBER}			std::cout << "NUMBER ";
-<INICIADO>{KEYWORD}			std::cout << toUpper(yytext);
-<INICIADO>{IDENTIFIER}		std::cout << "IDENTIFIER ";
-<INICIADO>\"					BEGIN(String);
-<String>{STRING}	std::cout << "STRING ";BEGIN(INITIAL);
-<String>\n 			std::cout << "\n\n ERROR LA CADENA NO ESTA TERMINADA\n "; return 0;
+<INICIADO>{NEWLINE}{TAB} 				std::cout <<"NEWLINE\n taaab";yyless(1);
+<INICIADO>{NEWLINE} 					std::cout << "NEWLINE \n";
+<INICIADO>{NUMBER}						std::cout << "NUMBER ";
+<INICIADO>{KEYWORD}						std::cout << toUpper(yytext);
+<INICIADO>{IDENTIFIER}					std::cout << "IDENTIFIER ";
+<INICIADO>\"							BEGIN(String);
+
+<String>{STRING}						std::cout << "STRING ";BEGIN(INITIAL);
+<String>\n 								std::cout << "\n\n ERROR LA CADENA NO ESTA TERMINADA\n "; return 0;
 %%
 
 std::string toUpper(std::string original) {
