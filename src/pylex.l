@@ -2,9 +2,14 @@
 #include <iostream>
 #include <string>
 #include <locale>
+#include "pila.h"
 
 std::locale loc;
 std::string toUpper(std::string);
+
+Pila pilaIndent;
+std::string toUpper(std::string);
+std::string getIndents(std::string);
 
 %}
 
@@ -52,9 +57,9 @@ STRING {STRINGITEM}*\"
 . 										{yyless(0);BEGIN(INICIADO);}
 
 <INICIADO>{COMMENT}
-<INICIADO>{NEWLINE}{SPACE}*{NEWLINE}
-<INICIADO>{NEWLINE}{TAB} 				std::cout <<"NEWLINE\n taaab";yyless(1);
-<INICIADO>{NEWLINE} 					std::cout << "NEWLINE \n";
+<INICIADO>{NEWLINE}({SPACE}|{TAB})*{NEWLINE}
+<INICIADO>{NEWLINE}({SPACE}|{TAB})+		std::cout << getIndents(yytext);
+<INICIADO>{NEWLINE} 					std::cout << getIndents("") << "NEWLINE \n";
 <INICIADO>{NUMBER}						std::cout << "NUMBER ";
 <INICIADO>{KEYWORD}						std::cout << toUpper(yytext);
 <INICIADO>{IDENTIFIER}					std::cout << "IDENTIFIER ";
@@ -68,6 +73,19 @@ std::string toUpper(std::string original) {
 	for (std::string::size_type i=0; i<original.length(); ++i)
     	original[i] = std::toupper(original[i],loc);
     return original;
+}
+
+std::string getIndents(std::string espacios) {
+	int numEspacios = 0;
+	for (std::string::size_type i=0; i<espacios.length(); ++i) {
+		if(espacios[i] == ' ') {
+			numEspacios++;
+		} else if (espacios[i] == '\t') {
+			numEspacios += 4;
+		}
+	}
+	std::cout << "\nHay " << numEspacios << " espacios";
+	return "";
 }
 
 int main(int argc, char *argv[]){
