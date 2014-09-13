@@ -21,6 +21,14 @@ int Pila::pop() {
 	return resultado;
 }
 
+//Funcion para ver, es decir no lo quita, el tope de la pila
+int Pila::top() {
+	//Guardamos el elemento
+	int resultado = pila.back();
+	//Regresamos el elemento
+	return resultado;
+}
+
 //Funcion para imprimir la pila actual
 void Pila::print() {
 	//Iteramos desde el tamano de la pila hasta cero e imprimimos el elemento

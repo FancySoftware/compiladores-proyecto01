@@ -2,7 +2,6 @@
 #include <iostream>
 #include <string>
 #include <locale>
-#include "pila.h"
 
 std::locale loc;
 std::string toUpper(std::string);

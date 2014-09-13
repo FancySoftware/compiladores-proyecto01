@@ -12,6 +12,9 @@ class Pila {
   		//Funcion pop para tomar el elemento del tope de la pila
   		int pop();
 
+      //Funcion para ver, es decir no lo quita, el tope de la pila
+      int top();
+
   		//Funcion para imprimir la pila actual
   		void print();
 
