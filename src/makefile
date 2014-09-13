@@ -13,4 +13,4 @@ clean:
 	rm pylex pylex.cpp pila.o
 
 run:
-	./pylex pyprueba1.py
+	./pylex prueba.py
