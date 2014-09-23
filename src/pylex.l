@@ -66,7 +66,7 @@ STRING {STRINGITEM}*\"
 <INICIADO>{IDENTIFIER}					std::cout << "IDENTIFIER ";
 <INICIADO>\"							BEGIN(String);
 
-<String>{STRING}						std::cout << "STRING ";BEGIN(INITIAL);
+<String>{STRING}						std::cout << "STRING ";BEGIN(INICIADO);
 <String>\n 								std::cout << "\n\n ERROR LA CADENA NO ESTA TERMINADA\n "; return 0;
 %%
 
