@@ -105,6 +105,9 @@ std::string getIndents(std::string espacios) {
 			std::cout << "\nFalla en la indentación\n";
 			exit(EXIT_FAILURE);
 		}
+		if(pilaIndent.top() == 0) {
+			break;
+		}
 	}
 	return "";
 }
