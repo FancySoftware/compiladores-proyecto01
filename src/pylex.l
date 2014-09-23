@@ -97,7 +97,7 @@ std::string getIndents(std::string espacios) {
 		return "INDENT ";
 	}
 	std::string dedents = "";
-	while(pilaIndent.top() != 0) {
+	while(pilaIndent.length() != 0) {
 		if(pilaIndent.top() > numEspacios) {
 			pilaIndent.pop();
 			num_dedents++;

@@ -1,6 +1,6 @@
 #Comentario Inicial
 if 3 > 1:
-	x = -4
+		x = -4
 	while x < 2:#COMENTARIO
 		x+=1
 		#COMENTARIO
