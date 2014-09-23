@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include "pila.h"
 
+int num_dedents = 0;
 std::locale loc;
 std::string toUpper(std::string);
 
@@ -18,6 +19,7 @@ std::string getIndents(std::string);
 %option outfile="pylex.cpp"
 %x String
 %x INICIADO
+%x DEDENT
 
 COMMENT (#.*)
 NEWLINE [\n]
@@ -59,12 +61,14 @@ STRING {STRINGITEM}*\"
 
 <INICIADO>{COMMENT}
 <INICIADO>{NEWLINE}({SPACE}|{TAB})*{NEWLINE}
-<INICIADO>{NEWLINE}({SPACE}|{TAB})+		std::cout << "NEWLINE \n" << getIndents(yytext);
+<INICIADO>{NEWLINE}({SPACE}|{TAB})* 	{std::cout << "NEWLINE \n" << getIndents(yytext); if(num_dedents > 0) {BEGIN(DEDENT);};}
 <INICIADO>{NEWLINE} 					std::cout << "NEWLINE \n" << getIndents("");
 <INICIADO>{NUMBER}						std::cout << "NUMBER ";
 <INICIADO>{KEYWORD}						std::cout << toUpper(yytext);
 <INICIADO>{IDENTIFIER}					std::cout << "IDENTIFIER ";
 <INICIADO>\"							BEGIN(String);
+
+<DEDENT>. 								{yyless(0);num_dedents--;if(num_dedents == 0) {BEGIN(INICIADO);};std::cout << "DEDENT ";}
 
 <String>{STRING}						std::cout << "STRING ";BEGIN(INICIADO);
 <String>\n 								std::cout << "\n\n ERROR LA CADENA NO ESTA TERMINADA\n "; return 0;
@@ -96,13 +100,13 @@ std::string getIndents(std::string espacios) {
 	while(pilaIndent.top() != 0) {
 		if(pilaIndent.top() > numEspacios) {
 			pilaIndent.pop();
-			dedents += "DEDENT ";
+			num_dedents++;
 		} else if (pilaIndent.top() < numEspacios) {
 			std::cout << "\nFalla en la indentación\n";
 			exit(EXIT_FAILURE);
 		}
 	}
-	return dedents;
+	return "";
 }
 
 int main(int argc, char *argv[]){
