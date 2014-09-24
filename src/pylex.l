@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include "pila.h"
 
-int num_dedents = 0;
+int num_dedents = 0, num_indents = 0;
 std::locale loc;
 std::string toUpper(std::string);
 
@@ -18,8 +18,9 @@ std::string getIndents(std::string);
 %option noyywrap
 %option outfile="pylex.cpp"
 %x String
-%x INICIADO
-%x DEDENT
+%x Iniciado
+%x Dedent
+%x Indent
 
 COMMENT (#.*)
 NEWLINE [\n]
@@ -57,21 +58,59 @@ STRING {STRINGITEM}*\"
 
 {COMMENT}
 {NEWLINE}
-. 										{yyless(0);BEGIN(INICIADO);}
+. 										{
+											yyless(0);
+											BEGIN(Iniciado);
+										}
 
-<INICIADO>{COMMENT}
-<INICIADO>{NEWLINE}({SPACE}|{TAB})*{NEWLINE}
-<INICIADO>{NEWLINE}({SPACE}|{TAB})* 	{std::cout << "NEWLINE \n" << getIndents(yytext); if(num_dedents > 0) {BEGIN(DEDENT);};}
-<INICIADO>{NEWLINE} 					std::cout << "NEWLINE \n" << getIndents("");
-<INICIADO>{NUMBER}						std::cout << "NUMBER ";
-<INICIADO>{KEYWORD}						std::cout << toUpper(yytext);
-<INICIADO>{IDENTIFIER}					std::cout << "IDENTIFIER ";
-<INICIADO>\"							BEGIN(String);
+<Iniciado>{COMMENT}
+<Iniciado>{NEWLINE}({SPACE}|{TAB})*{NEWLINE}
+<Iniciado>{NEWLINE}({SPACE}|{TAB})+ 	{
+											getIndents(yytext);
+											if(num_dedents > 0) {
+												BEGIN(Dedent);
+											} else if(num_indents > 0) {
+												BEGIN(Indent);
+											}
+											std::cout << "NEWLINE \n";
+										}
+<Iniciado>{NEWLINE} 					{
+											getIndents("");
+											if(num_dedents > 0) {
+												BEGIN(Dedent);
+											} else if(num_indents > 0) {
+												BEGIN(Indent);
+											}
+											std::cout << "NEWLINE \n";
+										}
+<Iniciado>{NUMBER}						std::cout << "NUMBER ";
+<Iniciado>{KEYWORD}						std::cout << toUpper(yytext);
+<Iniciado>{IDENTIFIER}					std::cout << "IDENTIFIER ";
+<Iniciado>\"							BEGIN(String);
 
-<DEDENT>. 								{yyless(0);num_dedents--;if(num_dedents == 0) {BEGIN(INICIADO);};std::cout << "DEDENT ";}
+<Dedent>. 								{
+											yyless(0);
+											num_dedents--;
+											if(num_dedents == 0) {
+												BEGIN(Iniciado);
+											}
+											std::cout << "DEDENT ";
+										}
+<Indent>. 								{
+											yyless(0);
+											num_indents--;
+											BEGIN(Iniciado);
+											std::cout << "INDENT ";
+										}
 
-<String>{STRING}						std::cout << "STRING ";BEGIN(INICIADO);
-<String>\n 								std::cout << "\n\n ERROR LA CADENA NO ESTA TERMINADA\n "; return 0;
+<String>{STRING}						{
+											std::cout << "STRING ";
+											BEGIN(Iniciado);
+										}
+<String>\n 								{
+											std::cout << "\n\n ERROR LA CADENA NO ESTA TERMINADA\n ";
+											exit(EXIT_FAILURE);
+										}
 %%
 
 std::string toUpper(std::string original) {
@@ -94,7 +133,8 @@ std::string getIndents(std::string espacios) {
 	}
 	if(pilaIndent.top() < numEspacios) {
 		pilaIndent.push(numEspacios);
-		return "INDENT ";
+		num_indents++;
+		return "";
 	}
 	std::string dedents = "";
 	while(pilaIndent.length() != 0) {
@@ -104,6 +144,9 @@ std::string getIndents(std::string espacios) {
 		} else if (pilaIndent.top() < numEspacios) {
 			std::cout << "\nFalla en la indentación\n";
 			exit(EXIT_FAILURE);
+		}
+		if(pilaIndent.top() == 0) {
+			break;
 		}
 	}
 	return "";
