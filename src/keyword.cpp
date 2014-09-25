@@ -3,7 +3,7 @@
 #include "keyword.h"
 using namespace std;
 
-yytokentype getTokenFromKeyword(string kyeword){
+yytokentype getTokenFromKeyword(string keyword){
     if (keyword.compare("print")) return PRINT;
     if (keyword.compare("False")) return FALSE;
     if (keyword.compare("class")) return CLASS;
