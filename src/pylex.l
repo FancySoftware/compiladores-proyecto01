@@ -3,7 +3,9 @@
 #include <string>
 #include <locale>
 #include <stdlib.h>
+#include "pylex_parser.h"
 #include "pila.h"
+#include "keyword.h"
 
 int num_dedents = 0, num_indents = 0;
 std::locale loc;
@@ -84,7 +86,7 @@ STRING {STRINGITEM}*\"
 											return NEWLINE;
 										}
 <Iniciado>{NUMBER}						return NUMBER;
-<Iniciado>{KEYWORD}						std::cout << toUpper(yytext);
+<Iniciado>{KEYWORD}						return getTokenFromKeyword(yytext);
 <Iniciado>{IDENTIFIER}					return IDENTIFIER;
 <Iniciado>\"							BEGIN(String);
 
@@ -112,12 +114,6 @@ STRING {STRINGITEM}*\"
 											exit(EXIT_FAILURE);
 										}
 %%
-
-std::string toUpper(std::string original) {
-	for (std::string::size_type i=0; i<original.length(); ++i)
-    	original[i] = std::toupper(original[i],loc);
-    return original;
-}
 
 std::string getIndents(std::string espacios) {
 	int numEspacios = 0;
