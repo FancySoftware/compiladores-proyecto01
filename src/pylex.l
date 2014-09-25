@@ -81,11 +81,11 @@ STRING {STRINGITEM}*\"
 											} else if(num_indents > 0) {
 												BEGIN(Indent);
 											}
-											std::cout << "NEWLINE \n";
+											return NEWLINE;
 										}
-<Iniciado>{NUMBER}						std::cout << "NUMBER ";
+<Iniciado>{NUMBER}						return NUMBER;
 <Iniciado>{KEYWORD}						std::cout << toUpper(yytext);
-<Iniciado>{IDENTIFIER}					std::cout << "IDENTIFIER ";
+<Iniciado>{IDENTIFIER}					return IDENTIFIER;
 <Iniciado>\"							BEGIN(String);
 
 <Dedent>. 								{
@@ -94,17 +94,17 @@ STRING {STRINGITEM}*\"
 											if(num_dedents == 0) {
 												BEGIN(Iniciado);
 											}
-											std::cout << "DEDENT ";
+											return DEDENT;
 										}
 <Indent>. 								{
 											yyless(0);
 											num_indents--;
 											BEGIN(Iniciado);
-											std::cout << "INDENT ";
+											return INDENT;
 										}
 
 <String>{STRING}						{
-											std::cout << "STRING ";
+											return STRING;
 											BEGIN(Iniciado);
 										}
 <String>\n 								{
