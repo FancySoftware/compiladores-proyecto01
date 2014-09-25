@@ -1,4 +1,3 @@
-pila.o
+*.o
 pylex
-pylex.o
 pylex.cpp
