@@ -72,7 +72,7 @@ STRING {STRINGITEM}*\"
 											} else if(num_indents > 0) {
 												BEGIN(Indent);
 											}
-											std::cout << "NEWLINE \n";
+											return NEWLINE;
 										}
 <Iniciado>{NEWLINE} 					{
 											getIndents("");
