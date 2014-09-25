@@ -24,6 +24,8 @@ std::string getIndents(std::string);
 %x Dedent
 %x Indent
 
+ENDMARKER <<EOF>>
+
 COMMENT (#.*)
 NEWLINE [\n]
 SPACE [\ ]
@@ -57,6 +59,8 @@ SPECIALSTRING [\"\t\\\r\ ]
 STRINGITEM ([a-zA-Z0-9]|{SPECIALSTRING})
 STRING {STRINGITEM}*\"
 %%
+
+<INITIAL,Iniciado,Indent,Dedent,String>{ENDMARKER} return ENDMARKER;
 
 {COMMENT}
 {NEWLINE}
