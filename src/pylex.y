@@ -374,7 +374,8 @@ testlist1: test aux26
 yield_expr: YIELD testlist
 			|YIELD
 %%
-int main(){
-	yyparse();
-	return 0;
+int main(int argc, char *argv[]){
+    extern FILE* yyin;
+    yyin=fopen(argv[1],"r");
+ 	yyparse();
 }

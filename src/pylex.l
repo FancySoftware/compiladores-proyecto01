@@ -149,9 +149,3 @@ std::string getIndents(std::string espacios) {
 	return "";
 }
 
-int main(int argc, char *argv[]){
-    extern FILE* yyin;
-    yyin=fopen(argv[1],"r");
-    pilaIndent.push(0);
-    yylex();
-}
