@@ -32,7 +32,7 @@ int yyerror(const char*s){printf("Error: %s\n",s);}
 %token CORRIMIENTOIZQ "<<"
 %token PUNTO "."
 %token EXEC "exec"
-%token MAYOR ">"
+%token MAYOR '>'
 %token MENOR "<"
 %token IGUALIGUAL "=="
 %token MAYORIGUAL ">="
@@ -56,33 +56,26 @@ int yyerror(const char*s){printf("Error: %s\n",s);}
 
 %%
 
-single_input: NEWLINE
-			| simple_stmt
-			| compound_stmt NEWLINE
-
-file_input: aux ENDMARKER
-aux:	
+file_input: aux
+aux:
 	|aux NEWLINE 
 	|aux stmt
 
-eval_input: testlist aux2 ENDMARKER
-aux2:
-	|aux2 NEWLINE
-
-
 funcdef: DEF IDENTIFIER parameters PUNTOS suite
-parameters: PARIZQ temp PARDER
-temp: 
-	|varargslist
-varargslist: aux3 PORPOR IDENTIFIER
+parameters: PARIZQ PARDER
+		|PARIZQ varargslist PARDER
+
+varargslist: aux3 PORPOR IDENTIFIER 
 			| aux3 POR IDENTIFIER COMA PORPOR IDENTIFIER
 			| aux3 POR IDENTIFIER
-			| fpdef IGUAL test aux4
-			| fpdef aux4
-
+			| fpdef IGUAL test aux4 COMA
+			| fpdef IGUAL test aux4 
+			| fpdef aux4 COMA
+			| fpdef aux4 
 aux3:
 	|fpdef IGUAL test COMA
 	|fpdef COMA
+
 aux4:
 	| COMA fpdef IGUAL test
 	| COMA fpdef 
@@ -92,11 +85,15 @@ fpdef: IDENTIFIER
 
 fplist: fpdef aux5 COMA
 		|fpdef aux5
+
 aux5:
 	| aux5 COMA fpdef
 
-stmt: simple_stmt |compound_stmt
+stmt: simple_stmt 
+	| compound_stmt
+
 simple_stmt: small_stmt aux6 PUNTOCOMA NEWLINE
+			|small_stmt aux6 NEWLINE
 
 aux6: 
 	|aux6 PUNTOCOMA small_stmt
@@ -109,15 +106,10 @@ small_stmt: expr_stmt
 		  | global_stmt
 		  | exec_stmt
 
-global_stmt: GLOBAL IDENTIFIER temp
-temp:
-	|temp COMA IDENTIFIER
-expr_stmt: testlist augassign yield_expr
-		| testlist augassign testlist
-		| testlist IGUAL aux7
+expr_stmt: testlist augassign testlist
+		| testlist aux7
 aux7:
-	|aux7 yield_expr
-	|aux7 testlist
+	|aux7 IGUAL testlist
 
 augassign: MASIGUAL
 		| MENOSIGUAL
@@ -132,9 +124,9 @@ augassign: MASIGUAL
 		| PORPORIGUAL
 		| DIVDIVIGUAL
 
-print_stmt: PRINT 
-			| PRINT test aux8 COMA
-			| PRINT test aux8  
+print_stmt: | PRINT 
+			| PRINT test aux26 COMA
+			| PRINT test aux26 
 			| PRINT CORRIMIENTODER test
 		   	| PRINT CORRIMIENTODER test aux8 COMA
 		   	| PRINT CORRIMIENTODER test aux8 
@@ -158,64 +150,49 @@ raise_stmt: RAISE test COMA test COMA test
 			|RAISE test
 			|RAISE test COMA test
 		 	|RAISE 
-compound_stmt: if_stmt
-			| while_stmt
-			| for_stmt
-			|with_stmt
-			|funcdef
+
+global_stmt: GLOBAL IDENTIFIER temp2
+temp2:
+	|temp2 COMA IDENTIFIER
+
 exec_stmt: EXEC expr IN test COMA test
 		| EXEC expr 
 		| EXEC expr IN test
+
+compound_stmt: if_stmt
+			| while_stmt
+			| for_stmt
+			| funcdef
+
 if_stmt: IF test PUNTOS suite aux9 ELSE PUNTOS suite
 		|IF test PUNTOS suite aux9 
 aux9:
 	|aux9 ELIF test PUNTOS suite
+
 
 while_stmt: WHILE test PUNTOS suite ELSE PUNTOS suite
 			|WHILE test PUNTOS suite
 
 for_stmt: FOR exprlist IN testlist PUNTOS suite ELSE PUNTOS suite
 		| FOR exprlist IN testlist PUNTOS suite
-with_stmt: WITH with_item aux10 PUNTOS suite
 
-aux10:
-	|aux10 COMA	with_item
-
-with_item: test
-		| test AS expr
-
-except_clause: EXCEPT test AS test
-			| EXCEPT 
-			| EXCEPT test
-			| EXCEPT test COMA test
-			
 suite: simple_stmt
 	| NEWLINE INDENT aux11 DEDENT
+
 aux11: stmt
 	|aux11 stmt
 
-testlist_safe: old_test aux12 COMA
-			| old_test aux12 
-			| old_test
-aux12: COMA old_test
-	|aux12 COMA old_test
+test: and_test aux13 
 
-old_test: or_test
-		| old_lambdef 
-
-old_lambdef: LAMBDA varargslist PUNTOS old_test
-			|LAMBDA PUNTOS old_test
-test: or_test IF or_test ELSE test 
-	| or_test 
-or_test: and_test aux13
-aux13:
+aux13: 
 	|aux13 OR and_test
 
 and_test: not_test aux14
-aux14:
-	|aux14 AND not_test
 
-not_test: NOT not_test
+aux14:
+	|aux14 AND not_test 
+
+not_test: NOT not_test 
 	|comparison
 
 comparison: expr aux15
@@ -269,11 +246,11 @@ factor: MAS factor
 	| power
 
 power: atom aux24 PORPOR factor
+	| atom aux24 
 aux24:
 	|trailer
 
-atom: PARIZQ yield_expr PARDER
-	| PARIZQ testlist_comp PARDER
+atom: PARIZQ testlist_comp PARDER
 	| PARIZQ PARDER
 	| CORIZQ listmaker CORDER
 	| CORIZQ CORDER
@@ -283,6 +260,7 @@ atom: PARIZQ yield_expr PARDER
 	| IDENTIFIER
 	| NUMBER
 	| aux25
+
 aux25: STRING
 	|aux25 STRING
 
@@ -307,15 +285,15 @@ aux27:
 	| aux27 COMA subscript
 
 subscript: PUNTO PUNTO PUNTO 
-		| test 
-		| test PUNTOS test sliceop
-		| PUNTOS
+		| test
+		| PUNTOS 
 		| test PUNTOS
+		| test PUNTOS test sliceop
 		| PUNTOS test
-		| PUNTOS sliceop
 		| test PUNTOS test
-		| test PUNTOS sliceop
 		| PUNTOS test sliceop
+		| PUNTOS sliceop
+		| test PUNTOS sliceop
 
 sliceop:PUNTOS test
 		|PUNTOS
@@ -328,54 +306,60 @@ aux28:
 testlist: test aux26 COMA
 		| test aux26
 
-dictorsetmaker: test PUNTOS test comp_for
-			| test PUNTOS test aux29 COMA
+testlist_safe: test aux12 COMA
+			| test aux12 
+			| test
+
+aux12: COMA test
+	|aux12 COMA test
+
+dictorsetmaker: test PUNTOS test aux29 COMA
 			| test PUNTOS test aux29
-			| test comp_for
-			| test aux26 COMA
-			| test aux26 
+
 aux29: 
 	| aux29 COMA test PUNTOS test
 
 
 arglist: aux30 argument COMA 
 		|aux30 argument
-		|aux30 POR test aux31
-		|aux30 POR test aux31 COMA PORPOR test
+		|aux30 POR test 
+		|aux30 POR test COMA PORPOR test
 		|aux30 PORPOR test
+
 aux30:
 	|aux30 argument COMA
-aux31:
-	|aux31 COMA argument
 
 argument: test 
 		| test comp_for
 		| test IGUAL test
+		| test IGUAL test PARIZQ comp_for PARDER
 
 list_iter: list_for 
 		| list_if
 
 list_for: FOR exprlist IN testlist_safe list_iter
-		|FOR exprlist IN testlist_safe
+		| FOR exprlist IN testlist_safe
 
-list_if: IF old_test list_iter
-		|IF old_test 
+list_if: IF test list_iter
+		|IF test
+
 comp_iter: comp_for 
 		| comp_if
 
-comp_for: FOR exprlist IN or_test comp_iter
-		| FOR exprlist IN or_test
+comp_for: FOR exprlist IN test comp_iter
+		| FOR exprlist IN test
 
-comp_if: IF old_test comp_iter
-		|IF old_test 
+comp_if: IF test comp_iter
+		|IF test 
 
 testlist1: test aux26
 
-yield_expr: YIELD testlist
-			|YIELD
+
+
 %%
 int main(int argc, char *argv[]){
     extern FILE* yyin;
     yyin=fopen(argv[1],"r");
  	yyparse();
 }
+

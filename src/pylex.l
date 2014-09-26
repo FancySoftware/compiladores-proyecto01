@@ -14,6 +14,7 @@ std::string toUpper(std::string);
 Pila pilaIndent;
 std::string toUpper(std::string);
 std::string getIndents(std::string);
+void pseudo_main();
 
 %}
 
@@ -63,6 +64,7 @@ STRING {STRINGITEM}*\"
 {NEWLINE}
 . 										{
 											yyless(0);
+											pseudo_main();
 											BEGIN(Iniciado);
 										}
 
@@ -115,7 +117,9 @@ STRING {STRINGITEM}*\"
 											exit(EXIT_FAILURE);
 										}
 %%
-
+void pseudo_main() {
+	pilaIndent.push(0);
+}
 std::string getIndents(std::string espacios) {
 	int numEspacios = 0;
 	for (std::string::size_type i=0; i<espacios.length(); ++i) {
