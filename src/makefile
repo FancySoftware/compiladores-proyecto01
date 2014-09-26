@@ -1,6 +1,6 @@
 all: proyecto_01 run
 
-proyecto_01: bison flex pila keyword
+proyecto_01: flex bison pila keyword
 	g++ pila.o keyword.o pylex_parser.o pylex.cpp -o pylex
 
 bison:

@@ -5,7 +5,7 @@ int yyerror(const char*s){printf("Error: %s\n",s);}
 
 %}
 
-%token ENDMAKER NEWLINE DEF IDENTIFIER DEL PASS BREAK CONTINUE RETURN RAISE IMPORT FROM AS
+%token ENDMARKER NEWLINE DEF IDENTIFIER DEL PASS BREAK CONTINUE RETURN RAISE IMPORT FROM AS
 %token GLOBAL FOR IN WITH EXCEPT INDENT DEDENT LAMBDA OR AND NOT IS ELIF ELSE IF NUMBER PRINT
 %token STRING WHILE YIELD
 %token PUNTOS ":"
@@ -60,12 +60,12 @@ single_input: NEWLINE
 			| simple_stmt
 			| compound_stmt NEWLINE
 
-file_input: aux ENDMAKER
+file_input: aux ENDMARKER
 aux:	
 	|aux NEWLINE 
 	|aux stmt
 
-eval_input: testlist aux2 ENDMAKER
+eval_input: testlist aux2 ENDMARKER
 aux2:
 	|aux2 NEWLINE
 
