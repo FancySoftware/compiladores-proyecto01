@@ -1,7 +1,11 @@
 all: proyecto_01 run
 
-proyecto_01: flex pila keyword
-	g++ pila.o keyword.o pylex.cpp -o pylex
+proyecto_01: bison flex pila keyword
+	g++ pila.o keyword.o pylex_parser.o pylex.cpp -o pylex
+
+bison:
+	bison -dv pylex.y -o pylex_parser.cpp
+	g++ -c pylex_parser.cpp
 
 flex:
 	flex pylex.l
