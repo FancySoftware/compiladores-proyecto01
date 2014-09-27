@@ -3,7 +3,7 @@
 #include <string>
 #include <locale>
 #include <stdlib.h>
-#include "pylex_parser.hpp"
+#include "pypar.hpp"
 #include "pila.h"
 #include "keyword.h"
 
@@ -18,6 +18,7 @@ void pseudo_main();
 
 %}
 
+%option debug
 %option noyywrap
 %option outfile="pylex.cpp"
 %x String
@@ -27,7 +28,7 @@ void pseudo_main();
 
 
 COMMENT (#.*)
-NEWLINE [\n]
+NEWLINE '\n'
 SPACE [\ ]
 TAB (\t|\ +)
 
@@ -55,10 +56,14 @@ EXPONENT ([E|e][+|-]?{DIGIT}+)
 KEYWORD (print|False|class|finally|is|return|None|continue|for|lambda|try|True|def|from|nonlocal|while|and|del|global|not|with|as|elif|if|or|yield|assert|else|import|pass|break|except|in|raise)
 IDENTIFIER [a-zA-Z|_][a-zA-Z0-9_]*
 
+OPERATION (":"|"("|")"|","|";"|"="|"**"|"*"|"+="|"-="|"*="|"/="|"\%="|"&="|"|="|"^="|"<<="|">>="|"**="|"//="|">>"|"<<"|"."|"exec"|">"|"<"|"=="|">="|"<="|"<>"|"!="|"|"|"&"|"^"|"+"|"-"|"\%"|"/"|"//"|"~"|"]"|"["|"`"|"{"|"}")
+
 SPECIALSTRING [\"\t\\\r\ ]
 STRINGITEM ([a-zA-Z0-9]|{SPECIALSTRING})
 STRING {STRINGITEM}*\"
 %%
+
+<<EOF>> { static int once = 0; return (once = !once) ? NEWLINE : 0; }
 
 {COMMENT}
 {NEWLINE}
@@ -92,6 +97,7 @@ STRING {STRINGITEM}*\"
 <Iniciado>{KEYWORD}						return getTokenFromKeyword(yytext);
 <Iniciado>{IDENTIFIER}					return IDENTIFIER;
 <Iniciado>\"							BEGIN(String);
+<Iniciado>{OPERATION} 					return getTokenFromOperation(yytext);
 
 <Dedent>. 								{
 											yyless(0);
@@ -112,10 +118,11 @@ STRING {STRINGITEM}*\"
 											return STRING;
 											BEGIN(Iniciado);
 										}
-<String>\n 								{
+<String>{NEWLINE}								{
 											std::cout << "\n\n ERROR LA CADENA NO ESTA TERMINADA\n ";
 											exit(EXIT_FAILURE);
 										}
+
 %%
 void pseudo_main() {
 	pilaIndent.push(0);

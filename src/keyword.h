@@ -1,5 +1,6 @@
 #include <string>
-#include "pylex_parser.hpp"
+#include "pypar.hpp"
 using namespace std;
 
 yytokentype getTokenFromKeyword(string);
+yytokentype getTokenFromOperation(string);
