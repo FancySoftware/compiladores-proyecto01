@@ -1,11 +1,10 @@
 all: proyecto_01 run
 
-proyecto_01: flex bison pila keyword
-	g++ pila.o keyword.o pylex_parser.o pylex.cpp -o pylex 
+proyecto_01: bison flex pila keyword
+	g++ pila.o keyword.o pylex.cpp pypar.cpp -o pylex
 
 bison:
-	bison -dv pylex.y -o pylex_parser.cpp
-	g++ -c pylex_parser.cpp
+	bison -dv pypar.y -o pypar.cpp
 
 flex:
 	flex pylex.l
@@ -20,5 +19,4 @@ clean:
 	rm pylex pylex.cpp *.o
 
 run:
-	./pylex pyprueba1.py 
- 
+	./pylex pyprueba1.py
