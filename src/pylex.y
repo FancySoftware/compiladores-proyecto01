@@ -9,7 +9,7 @@ int yyerror(const char*s){printf("Error: %s\n",s);}
 %token GLOBAL FOR IN WITH EXCEPT INDENT DEDENT LAMBDA OR AND NOT IS ELIF ELSE IF NUMBER PRINT
 %token STRING WHILE YIELD
 %token PUNTOS ":"
-%token PARIZQ "(" 
+%token PARIZQ '(' 
 %token PARDER ")"
 %token COMA "," 
 %token PUNTOCOMA ";"
@@ -57,6 +57,7 @@ int yyerror(const char*s){printf("Error: %s\n",s);}
 %%
 
 file_input: aux
+			
 aux:
 	|aux NEWLINE 
 	|aux stmt
