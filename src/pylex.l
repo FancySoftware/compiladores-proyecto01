@@ -1,4 +1,5 @@
 %{
+
 #include <iostream>
 #include <string>
 #include <locale>
@@ -16,7 +17,7 @@ std::string toUpper(std::string);
 std::string getIndents(std::string);
 void pseudo_main();
 %}
-
+%option debug
 %option noyywrap
 %option outfile="pylex.cpp"
 %x String
@@ -69,9 +70,9 @@ STRING {STRINGITEM}*"\""
 											BEGIN(Iniciado);
 										}
 
+<Iniciado><<EOF>>						{ static int once = 0; return (once = !once) ? NEWLINE : 0; }
 <Iniciado>{SPACE}
 <Iniciado>{COMMENT}
-<Iniciado>{NEWLINE}({SPACE}|{TAB})*{NEWLINE}
 <Iniciado>{NEWLINE}({SPACE}|{TAB})+ 	{
 											getIndents(yytext);
 											if(num_dedents > 0) {
@@ -81,6 +82,7 @@ STRING {STRINGITEM}*"\""
 											}
 											return NEWLINE;
 										}
+<Iniciado>{NEWLINE}({SPACE}|{TAB})*{NEWLINE}
 <Iniciado>{NEWLINE} 					{
 											getIndents("");
 											if(num_dedents > 0) {
@@ -114,6 +116,10 @@ STRING {STRINGITEM}*"\""
 <String>{STRING}						{
 											BEGIN(Iniciado);
 											return STRING;
+										}
+<String><<EOF>>							{
+											std::cout << "\n\n ERROR LA CADENA NO ESTA TERMINADA\n ";
+											exit(EXIT_FAILURE);
 										}
 <String>{NEWLINE}						{
 											std::cout << "\n\n ERROR LA CADENA NO ESTA TERMINADA\n ";
