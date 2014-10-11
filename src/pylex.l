@@ -15,10 +15,8 @@ Pila pilaIndent;
 std::string toUpper(std::string);
 std::string getIndents(std::string);
 void pseudo_main();
-
 %}
 
-%option debug
 %option noyywrap
 %option outfile="pylex.cpp"
 %x String
@@ -28,9 +26,9 @@ void pseudo_main();
 
 
 COMMENT (#.*)
-NEWLINE '\n'
-SPACE [\ ]
-TAB (\t|\ +)
+NEWLINE "\n"
+SPACE "\ "
+TAB ("\t"|"\ "+)
 
 DIGIT [0-9]
 NONZERODIGIT [1-9]
@@ -58,12 +56,10 @@ IDENTIFIER [a-zA-Z|_][a-zA-Z0-9_]*
 
 OPERATION (":"|"("|")"|","|";"|"="|"**"|"*"|"+="|"-="|"*="|"/="|"\%="|"&="|"|="|"^="|"<<="|">>="|"**="|"//="|">>"|"<<"|"."|"exec"|">"|"<"|"=="|">="|"<="|"<>"|"!="|"|"|"&"|"^"|"+"|"-"|"\%"|"/"|"//"|"~"|"]"|"["|"`"|"{"|"}")
 
-SPECIALSTRING [\"\t\\\r\ ]
+SPECIALSTRING ("\""|"\t"|"\\"|"\r"|"\ ")
 STRINGITEM ([a-zA-Z0-9]|{SPECIALSTRING})
-STRING {STRINGITEM}*\"
+STRING {STRINGITEM}*"\""
 %%
-
-<<EOF>> { static int once = 0; return (once = !once) ? NEWLINE : 0; }
 
 {COMMENT}
 {NEWLINE}
@@ -73,6 +69,7 @@ STRING {STRINGITEM}*\"
 											BEGIN(Iniciado);
 										}
 
+<Iniciado>{SPACE}
 <Iniciado>{COMMENT}
 <Iniciado>{NEWLINE}({SPACE}|{TAB})*{NEWLINE}
 <Iniciado>{NEWLINE}({SPACE}|{TAB})+ 	{
@@ -115,10 +112,10 @@ STRING {STRINGITEM}*\"
 										}
 
 <String>{STRING}						{
-											return STRING;
 											BEGIN(Iniciado);
+											return STRING;
 										}
-<String>{NEWLINE}								{
+<String>{NEWLINE}						{
 											std::cout << "\n\n ERROR LA CADENA NO ESTA TERMINADA\n ";
 											exit(EXIT_FAILURE);
 										}
@@ -152,8 +149,7 @@ std::string getIndents(std::string espacios) {
 		} else if (pilaIndent.top() < numEspacios) {
 			std::cout << "\nFalla en la indentación\n";
 			exit(EXIT_FAILURE);
-		}
-		if(pilaIndent.top() == 0) {
+		} else if (pilaIndent.top() == numEspacios) {
 			break;
 		}
 	}
