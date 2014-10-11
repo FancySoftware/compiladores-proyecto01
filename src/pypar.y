@@ -1,11 +1,11 @@
-%debug
+%error-verbose
 %{
+#define YYDEBUG 1
 #include <stdio.h>
 extern int yylex();
 void yyerror(const char *s) { printf("error: %s\n", s); }
-
 %}
-
+%debug
 %token ENDMARKER NEWLINE DEF IDENTIFIER DEL PASS BREAK CONTINUE RETURN RAISE IMPORT FROM AS
 %token GLOBAL FOR IN WITH EXCEPT INDENT DEDENT LAMBDA OR AND NOT IS ELIF ELSE IF PRINT
 %token STRING WHILE YIELD
@@ -321,6 +321,10 @@ testlist1: test aux26
 int main(int argc, char *argv[]){
     extern FILE* yyin;
     yyin=fopen(argv[1],"r");
- 	yyparse();
+    int exito = yyparse();
+    if(exito == 0) {
+    	printf("Archivo correcto\n");
+    	exit(EXIT_SUCCESS);
+    }
+    exit(EXIT_FAILURE);
 }
-
