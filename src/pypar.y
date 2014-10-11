@@ -15,13 +15,11 @@ void yyerror(const char *s) { printf("error: %s\n", s); }
 %token MAYORIGUAL MENORIGUAL MAYORMENOR DIFERENTE ORR ANDD NOTX MAS MENOS MOD DIV DIVDIV NEG CORDER
 %token CORIZQ TILDE LLAVEIZQ LLAVEDER
 %token NUMBER
-%token ENDMARKER 0
 %%
 
-file_input: aux
-aux:
-	|aux NEWLINE
-	|aux stmt
+file_input:
+	|file_input NEWLINE
+	|file_input stmt
 
 funcdef: DEF IDENTIFIER parameters PUNTOS suite
 parameters: PARIZQ PARDER

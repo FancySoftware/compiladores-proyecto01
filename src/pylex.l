@@ -14,10 +14,10 @@ std::string toUpper(std::string);
 
 Pila pilaIndent;
 std::string toUpper(std::string);
-std::string getIndents(std::string);
+void getIndents(std::string);
 void pseudo_main();
 %}
-%option debug
+
 %option noyywrap
 %option outfile="pylex.cpp"
 %x String
@@ -52,7 +52,7 @@ INTPART ({DIGIT}+)
 FRACTION ("."{DIGIT}+)
 EXPONENT ([E|e][+|-]?{DIGIT}+)
 
-KEYWORD (print|False|class|finally|is|return|None|continue|for|lambda|try|True|def|from|nonlocal|while|and|del|global|not|with|as|elif|if|or|yield|assert|else|import|pass|break|except|in|raise)
+KEYWORD (and|del|from|not|while|as|elif|global|or|with|assert|else|if|pass|yield|break|except|import|print|class|exec|in|raise|continue|finally|is|return|def|for|lambda|try)
 IDENTIFIER [a-zA-Z|_][a-zA-Z0-9_]*
 
 OPERATION (":"|"("|")"|","|";"|"="|"**"|"*"|"+="|"-="|"*="|"/="|"\%="|"&="|"|="|"^="|"<<="|">>="|"**="|"//="|">>"|"<<"|"."|"exec"|">"|"<"|"=="|">="|"<="|"<>"|"!="|"|"|"&"|"^"|"+"|"-"|"\%"|"/"|"//"|"~"|"]"|"["|"`"|"{"|"}")
@@ -69,10 +69,10 @@ STRING {STRINGITEM}*"\""
 											pseudo_main();
 											BEGIN(Iniciado);
 										}
-
-<Iniciado><<EOF>>						{ static int once = 0; return (once = !once) ? NEWLINE : 0; }
+<Iniciado><<EOF>> { static int once = 0; return (once = !once) ? NEWLINE : 0; }
 <Iniciado>{SPACE}
 <Iniciado>{COMMENT}
+<Iniciado>{NEWLINE}({SPACE}|{TAB})*{NEWLINE}
 <Iniciado>{NEWLINE}({SPACE}|{TAB})+ 	{
 											getIndents(yytext);
 											if(num_dedents > 0) {
@@ -82,7 +82,6 @@ STRING {STRINGITEM}*"\""
 											}
 											return NEWLINE;
 										}
-<Iniciado>{NEWLINE}({SPACE}|{TAB})*{NEWLINE}
 <Iniciado>{NEWLINE} 					{
 											getIndents("");
 											if(num_dedents > 0) {
@@ -130,7 +129,7 @@ STRING {STRINGITEM}*"\""
 void pseudo_main() {
 	pilaIndent.push(0);
 }
-std::string getIndents(std::string espacios) {
+void getIndents(std::string espacios) {
 	int numEspacios = 0;
 	for (std::string::size_type i=0; i<espacios.length(); ++i) {
 		if(espacios[i] == ' ') {
@@ -140,12 +139,12 @@ std::string getIndents(std::string espacios) {
 		}
 	}
 	if(pilaIndent.top() == numEspacios) {
-		return "";
+		return;
 	}
 	if(pilaIndent.top() < numEspacios) {
 		pilaIndent.push(numEspacios);
 		num_indents++;
-		return "";
+		return;
 	}
 	std::string dedents = "";
 	while(pilaIndent.length() != 0) {
@@ -156,9 +155,9 @@ std::string getIndents(std::string espacios) {
 			std::cout << "\nFalla en la indentación\n";
 			exit(EXIT_FAILURE);
 		} else if (pilaIndent.top() == numEspacios) {
-			break;
+			return;
 		}
 	}
-	return "";
+	return;
 }
 
