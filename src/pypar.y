@@ -19,7 +19,6 @@ void yyerror(const char *s) { printf("error: %s\n", s); }
 
 file_input: aux
 aux:
-	|aux NEWLINE
 	|aux stmt
 
 funcdef: DEF IDENTIFIER parameters PUNTOS suite
@@ -85,7 +84,7 @@ augassign: MASIGUAL
 		| PORPORIGUAL
 		| DIVDIVIGUAL
 
-print_stmt: | PRINT
+print_stmt: PRINT
 			| PRINT test aux26 COMA
 			| PRINT test aux26
 			| PRINT CORRIMIENTODER test
