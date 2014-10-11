@@ -1,4 +1,13 @@
-print "cadena"
-print "otra mas"
-if 3 > 1:
-    x = 10
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+x = "Codigo de prueba"
+avanza = True
+while avanza:
+    y += 1
+    if y == 8 :
+        print "Y es 8"
+        avanza = False
+    else:
+        print " esta es una cadenaa"
+        z = 10
+print "Termina el programa"
