@@ -1,3 +1,14 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+def aja():
+	1
+=======
+print "cadena"
+print "otra mas"
+if 3 > 1:
+    x = 10
+>>>>>>> b586bcc2a5d884737f12527e7535b03c00fd0a4e
+=======
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 x = "Codigo de prueba"
@@ -11,5 +22,9 @@ while avanza:
         print " esta es una cadenaa"
         z = 10
 print "Termina el programa"
+<<<<<<< HEAD
 for x in range(0,2):
     print x
+=======
+>>>>>>> 45eaa335d148480e0323e49b04d2ea0010c6c57f
+>>>>>>> 1ea188c26cabf0046bb338d162d69fe261674da4
