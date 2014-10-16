@@ -17,7 +17,7 @@ std::string toUpper(std::string);
 void getIndents(std::string);
 void pseudo_main();
 %}
-
+%option debug
 %option noyywrap
 %option outfile="pylex.cpp"
 %x String

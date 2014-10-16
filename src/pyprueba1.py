@@ -11,3 +11,5 @@ while avanza:
         print " esta es una cadenaa"
         z = 10
 print "Termina el programa"
+for x in range(0,2):
+    print x
