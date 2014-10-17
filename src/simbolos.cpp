@@ -51,6 +51,13 @@ class Simbolo: public Simbolos{
 		}
 	}
 	
+	/* funcion que inserta dentro de la tabla de simbolos del alcance actual un elemento*/
+	virtual void insert(string name, Elemento record){
+		if(!declaredLocally(name)){
+			tabla_actual.insert({name,record});
+		}
+	}
+
 	/* Funcion para abrir un nuevo alcance en la tabla de simbolos */
 	void openScope(){
 		alcance_actual +=1;
@@ -59,6 +66,12 @@ class Simbolo: public Simbolos{
 		// Agregamos la nueva tabla del alcance a nuestro vector de tablas
 		it = vector_tablas.begin();
 		vector_tablas.insert(it,1,tabla_nva);		
+	}
+
+	/* Cierra el alcance actual referido a la tabla de simbolos, regresa a un alcance exterior*/
+	void closeScope(){
+		alcance_actual -= 1;
+		tabla_actual = vector_tablas[alcance_actual];
 	}
 
 	/* Funcion que nos permite saber si name esta dentro del alcaance local, es decir el 
@@ -73,11 +86,7 @@ class Simbolo: public Simbolos{
 		return declarado;
 	}
 
-	/* Cierra el alcance actual referido a la tabla de simbolos, regresa a un alcance exterior*/
-	void closeScope(){
-		alcance_actual -= 1;
-		tabla_actual = vector_tablas[alcance_actual];
-	}
+	
 };
 
 
