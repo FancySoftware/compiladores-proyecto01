@@ -84,12 +84,8 @@ class Simbolo: public Simbolos{
 			declarado = false;
 		}
 		return declarado;
-	}
-
-	
+	}	
 };
-
-
 
 int main(){
 	return 0;
