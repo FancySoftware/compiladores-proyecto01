@@ -58,7 +58,8 @@ public:
 	/* funcion que inserta dentro de la tabla de simbolos del alcance actual un elemento*/
 	virtual void insert(string name, Elemento record){
 		//if(!declaredLocally(name)){
-			tabla_actual.insert({name,record});
+			//tabla_actual.insert({name,record});
+		vector_tablas.back().insert({name,record});
 		//}
 	}
 
@@ -92,12 +93,14 @@ public:
 
 	/*Funcion para imprimir la tabla, usada para las pruebas*/
 	void print() {
-		/*for( it = vector_tablas.begin(); it != vector_tablas.end(); ++it) {
+		cout << "tam vector_tablas: " << vector_tablas.size() << endl;
+		for( it = vector_tablas.begin(); it != vector_tablas.end(); ++it) {
 			unordered_map<string, Elemento> for_print = *it;
+			cout << "tam de un map: " << for_print.size() << endl;
 			for ( auto local_it = for_print.begin(); local_it!= for_print.end(); ++local_it )
-      			cout << " " << local_it->first << ":" << local_it->second;
+      			cout << " " << local_it->first;
       		cout << endl;
-		}*/
+		}
 	}
 };
 
@@ -110,6 +113,6 @@ int main(){
 	test.tipo = "int";
 	test.number = 10;
 	prueba->insert("equis",test);
-	//prueba->print();
+	prueba->print();
 	return 0;
 }
