@@ -34,6 +34,8 @@ public:
 class Simbolo: public Simbolos{
 
 	vector<unordered_map<string,Elemento>> vector_tablas;
+	vector<unordered_map<string,Elemento>>::iterator it;
+
 	int alcance_actual;
 	unordered_map<string, Elemento> tabla_actual;
 
@@ -54,6 +56,9 @@ class Simbolo: public Simbolos{
 		alcance_actual +=1;
 		unordered_map<string,Elemento> tabla_nva;
 		tabla_actual = tabla_nva;
+		// Agregamos la nueva tabla del alcance a nuestro vector de tablas
+		it = vector_tablas.begin();
+		vector_tablas.insert(it,1,tabla_nva);		
 	}
 
 	/* Funcion que nos permite saber si name esta dentro del alcaance local, es decir el 
@@ -71,6 +76,7 @@ class Simbolo: public Simbolos{
 	/* Cierra el alcance actual referido a la tabla de simbolos, regresa a un alcance exterior*/
 	void closeScope(){
 		alcance_actual -= 1;
+		tabla_actual = vector_tablas[alcance_actual];
 	}
 };
 
