@@ -23,7 +23,7 @@ class Simbolos
 public:
 
 /*Declaracion de los metodo que tenemos que implementar*/
-	virtual Elemento lookup(string name)=0;
+	virtual Elemento* lookup(string name)=0;
 	virtual void insert(string name, Elemento record)=0;
 	virtual void openScope()=0;
 	virtual void closeScope()=0;
@@ -45,15 +45,21 @@ public:
 	}
 
 	/* Funcion para buscar un elemento en la tabla de simbolos*/
-	Elemento lookup(string name){
-		
-		for (int i =alcance_actual-1; i>=0;i--){
-			unordered_map<string, Elemento>	tabla_aux = vector_tablas[i];
-			unordered_map<string,Elemento>::const_iterator iter = tabla_aux.find(name);
-			if(iter != tabla_aux.end()){
-				return iter->second;
+	Elemento* lookup(string name){
+		for( it = vector_tablas.begin(); it != vector_tablas.end(); ++it) {
+			unordered_map<string, Elemento> tabla = *it;
+			unordered_map<string,Elemento>::iterator local_it = tabla.begin();
+			for ( local_it = tabla.begin(); local_it!= tabla.end(); ++local_it ){
+				if(local_it->first == name){
+					Elemento temp = local_it->second;
+					Elemento *aux = &temp;
+					cout << "lo encontre";
+					return aux;
+				}
 			}
-		}
+      	}
+		cout<< "CASO DE NULL";
+		return NULL;
 		
 	}
 
@@ -125,11 +131,11 @@ int main(){
 	prueba->openScope();
 	prueba->insert("nuevo elemento", test);
 	prueba->print();
-	struct Elemento temp;
-	temp =	prueba->lookup("equis");
-	cout << temp.alcance;
-	cout << temp.nombre;
-	//prueba->closeScope();
-	//pueba->print();
+	prueba->lookup("nombre");
+	cout<< "\n";
+	prueba->lookup("equis");
+	cout<< "\n";
+	prueba->closeScope();
+	prueba->print();
 	return 0;
 }
