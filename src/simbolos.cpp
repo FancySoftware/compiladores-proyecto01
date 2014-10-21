@@ -78,7 +78,8 @@ public:
 	/* Cierra el alcance actual referido a la tabla de simbolos, regresa a un alcance exterior*/
 	void closeScope(){
 		alcance_actual -= 1;
-		tabla_actual = vector_tablas[alcance_actual];
+		vector_tablas.erase(vector_tablas.end());
+		tabla_actual = vector_tablas.back();
 	}
 
 	/* Funcion que nos permite saber si name esta dentro del alcaance local, es decir el
