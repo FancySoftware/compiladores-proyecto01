@@ -59,10 +59,7 @@ public:
 
 	/* funcion que inserta dentro de la tabla de simbolos del alcance actual un elemento*/
 	virtual void insert(string name, Elemento record){
-		//if(!declaredLocally(name)){
-			//tabla_actual.insert({name,record});
 		vector_tablas.back().insert({name,record});
-		//}
 	}
 
 	/* Funcion para abrir un nuevo alcance en la tabla de simbolos */
@@ -126,8 +123,13 @@ int main(){
 	cout <<prueba->declaredLocally("equis");
 	cout <<"\n";
 	prueba->openScope();
+	prueba->insert("nuevo elemento", test);
 	prueba->print();
-	prueba->closeScope();
-	prueba->print();
+	struct Elemento temp;
+	temp =	prueba->lookup("equis");
+	cout << temp.alcance;
+	cout << temp.nombre;
+	//prueba->closeScope();
+	//pueba->print();
 	return 0;
 }
