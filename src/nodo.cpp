@@ -248,6 +248,190 @@ private:
 public:
     TermNode(Node*);
 };
+class FactorNode:public Node{
+private:
+    Node*factor;
+public:
+    FactorNode(Node*);
+};
+
+class PowerNode:public Node{
+private:
+    Node*atom;
+    Node*factor;
+public:
+    PowerNode(Node*);
+    PowerNode(Node*, Node*);
+};
+
+class AtomNode:public Node{
+private:
+    Node*list;
+public:
+    AtomNode(Node*);
+};
+
+class ListmakerNode:public Node{
+private:
+    Node*test;
+    Node*list_for;
+public:
+    ListmakerNode(Node*);
+    ListmakerNode(Node*, Node*);
+};
+
+class Testlist_compNode:public Node{
+private:
+    Node*test;
+    Node*comp_for;
+public:
+    Testlist_compNode(Node*);
+    Testlist_compNode(Node*, Node*);
+};
+
+class TrailerNode:public Node{
+private:
+    Node*list;
+public:
+    TrailerNode(Node*);
+};
+
+
+class SubscriptlistNode :public Node{
+
+private:
+    Node* subscript;
+public:
+    SubscriptlistNode(Node*);
+};
+
+class SubscriptNode:public Node{
+private:
+    Node*test;
+    Node*sliceop;
+public:
+    SubscriptNode(Node*);
+    SubscriptNode(Node*, Node*);
+};
+
+class SliceopNode :public Node{
+private:
+    Node* test;
+public:
+    SliceopNode(Node*);
+};
+
+
+class ExprlistNode :public Node{
+private:
+    Node* expr;
+public:
+    ExprlistNode(Node*);
+};
+
+class TestlistNode :public Node{
+private:
+    Node* test;
+public:
+    TestlistNode(Node*);
+};
+
+class Testlist_safeNode :public Node{
+
+private:
+    Node* test;
+public:
+    Testlist_safeNode(Node*);
+};
+class DictorsetmarkerNode:public Node{
+
+private:
+    Node* test;
+public:
+    DictorsetmarkerNode(Node*);
+};
+
+class ArgList:public Node{
+
+private:
+    Node* test;
+public:
+    ArgList(Node*);
+};
+class ArgumentNode:public Node{
+private:
+    Node* test;
+    Node* comp_for;
+public:
+    ArgumentNode(Node*);
+    ArgumentNode(Node*, Node*);
+};
+class List_iterNode:public Node{
+private:
+    Node * list;
+public:
+    List_iterNode(Node*);
+};
+
+class List_forNode:public Node{
+private:
+    Node* exprlist;
+    Node*testlist_state;
+    Node*list_iter;
+
+public:
+    List_forNode(Node*, Node*);
+    List_forNode(Node*, Node*, Node*);
+};
+
+class List_ifNode:public Node{
+private:
+    Node*test;
+    Node*list_iter;
+
+public:
+    List_ifNode(Node*);
+    List_ifNode(Node*, Node*);
+};
+class Comp_iterNode:public Node{
+private:
+    Node*comp;
+public:
+    Comp_iterNode(Node*);
+};
+
+class Comp_forNode:public Node{
+private:
+    Node *exprlist;
+    Node *test;
+    Node *comp_iter;
+public:
+    Comp_forNode(Node*,Node*);
+    Comp_forNode(Node*,Node*,Node*);
+};
+
+
+class Comp_ifNode:public Node{
+private:
+    Node *test;
+    Node *comp_iter;
+public:
+    Comp_ifNode(Node*);
+    Comp_ifNode(Node*,Node*);
+};
+
+class Testlist1Node: public Node{
+private:
+    Node* test;
+public:
+    Testlist1Node(Node*);
+};
+
+class testNode: public Node{
+public:
+    testNode();
+
+};
 
 File_inputNode::File_inputNode() {
     input = 0;
@@ -420,4 +604,132 @@ Arith_exprNode::Arith_exprNode(Node* term){
 }
 TermNode::TermNode(Node* factor){
     this->factor = factor;
+}
+FactorNode::FactorNode(Node*factor){
+    this->factor=factor;
+}
+
+PowerNode::PowerNode(Node*atom){
+    this->atom =atom;
+}
+PowerNode::PowerNode(Node*atom, Node*factor){
+    this->atom = atom;
+    this->factor=factor;
+}
+AtomNode::AtomNode(Node*list){
+    this->list = list;
+}
+ListmakerNode::ListmakerNode(Node*test){
+    this->test = test;
+}
+ListmakerNode::ListmakerNode(Node*test, Node*list_for){
+    this->test = test;
+    this->list_for= list_for;
+}     
+Testlist_compNode::Testlist_compNode(Node*test){
+    this->test = test;
+}
+Testlist_compNode::Testlist_compNode(Node*test, Node*comp_for){
+    this->test = test;
+    this->comp_for= comp_for;
+}   
+SubscriptNode::SubscriptNode(Node*test){
+    this->test = test;
+}
+SubscriptNode::SubscriptNode(Node*test, Node*sliceop){
+    this->test = test;
+    this->sliceop= sliceop;
+}
+
+SubscriptlistNode::SubscriptlistNode(Node*subscript){
+    this->subscript= subscript;
+}
+
+
+TrailerNode::TrailerNode(Node*list){
+    this->list = list;
+}
+
+Testlist_safeNode::Testlist_safeNode(Node*test){
+    this->test= test;
+}
+
+TestlistNode::TestlistNode(Node*test){
+    this->test= test;
+}
+ExprlistNode::ExprlistNode(Node*test){
+    this->expr= expr;
+}
+
+SliceopNode::SliceopNode(Node*test){
+    this->test= test;
+}
+List_ifNode::List_ifNode(Node*test){
+    this->test=test;
+}
+List_ifNode::List_ifNode(Node*test, Node*list_iter){
+    this->test = test;
+    this->list_iter=list_iter; 
+}
+
+
+List_forNode::List_forNode(Node*exprlist, Node*testlist_state){
+    this->exprlist=exprlist;
+    this->testlist_state =testlist_state;
+}
+List_forNode::List_forNode(Node*exprlist,Node* testlist_state, Node*list_iter){
+    this->exprlist =exprlist;
+    this->testlist_state=testlist_state;
+    this->list_iter=list_iter; 
+}
+
+List_iterNode::List_iterNode(Node*list){
+    this->list = list;
+}
+
+
+ArgumentNode::ArgumentNode(Node*test){
+    this->test = test;
+}
+ArgumentNode::ArgumentNode(Node*test, Node *comp_for){
+    this->test=test;
+    this->comp_for =comp_for;
+}
+
+ArgList::ArgList(Node*test){
+    this->test= test;
+}
+
+DictorsetmarkerNode::DictorsetmarkerNode(Node*test){
+    this->test= test;
+}
+
+testNode::testNode() {
+}
+Testlist1Node::Testlist1Node(Node*test) {
+    this->test =test;
+}
+
+
+Comp_ifNode::Comp_ifNode(Node*test){
+    this->test = test;
+}
+Comp_ifNode::Comp_ifNode(Node* test, Node* comp_iter){
+    this->test=test;
+    this->comp_iter = comp_iter;
+}
+
+
+Comp_forNode::Comp_forNode(Node* exprlist, Node*test){
+    this->exprlist = exprlist;
+    this->test=test;
+}
+Comp_forNode::Comp_forNode(Node* exprlist, Node*test, Node* comp_iter){
+    this->exprlist = exprlist;
+    this->test=test;
+    this->comp_iter = comp_iter;
+}
+
+Comp_iterNode::Comp_iterNode(Node*comp){
+    this->comp  = comp;
 }

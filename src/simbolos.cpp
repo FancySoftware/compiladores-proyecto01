@@ -59,8 +59,7 @@ public:
 			}
       	}
 		cout<< "CASO DE NULL";
-		return NULL;
-		
+		return NULL;		
 	}
 
 	/* funcion que inserta dentro de la tabla de simbolos del alcance actual un elemento*/
