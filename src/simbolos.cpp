@@ -46,6 +46,7 @@ public:
 
 	/* Funcion para buscar un elemento en la tabla de simbolos*/
 	Elemento lookup(string name){
+		
 		for (int i =alcance_actual-1; i>=0;i--){
 			unordered_map<string, Elemento>	tabla_aux = vector_tablas[i];
 			unordered_map<string,Elemento>::const_iterator iter = tabla_aux.find(name);
@@ -53,6 +54,7 @@ public:
 				return iter->second;
 			}
 		}
+		
 	}
 
 	/* funcion que inserta dentro de la tabla de simbolos del alcance actual un elemento*/
@@ -82,17 +84,20 @@ public:
 	/* Funcion que nos permite saber si name esta dentro del alcaance local, es decir el
 	mas interno hasta el momento*/
 	bool declaredLocally(string name){
-		bool declarado = true;
-		unordered_map<string,Elemento>::const_iterator iter = tabla_actual.find(name);
-		Elemento temp = iter->second;
-		if(temp.alcance != alcance_actual || iter == tabla_actual.end()){
-			declarado = false;
+		bool declarado = false;
+		unordered_map<string,Elemento>  tabla = vector_tablas.back();
+		unordered_map<string,Elemento>::iterator it;
+		for(it = tabla.begin(); it!= tabla.end();++it){
+			if(it->first == name){
+				declarado = true;
+			}
 		}
 		return declarado;
 	}
 
 	/*Funcion para imprimir la tabla, usada para las pruebas*/
 	void print() {
+		
 		cout << "tam vector_tablas: " << vector_tablas.size() << endl;
 		for( it = vector_tablas.begin(); it != vector_tablas.end(); ++it) {
 			unordered_map<string, Elemento> for_print = *it;
@@ -101,6 +106,7 @@ public:
       			cout << " " << local_it->first;
       		cout << endl;
 		}
+		
 	}
 };
 
@@ -109,10 +115,18 @@ int main(){
 	prueba->openScope();
 	struct Elemento test;
 	test.alcance = 0;
-	test.nombre = "equis";
-	test.tipo = "int";
 	test.number = 10;
 	prueba->insert("equis",test);
+	prueba->insert("equis2", test);
+	prueba->insert("equis3", test);
+	prueba->insert("hola", test);
+	
+	cout <<prueba->declaredLocally("adios");
+	cout <<prueba->declaredLocally("equis");
+	cout <<"\n";
+	prueba->openScope();
+	prueba->print();
+	prueba->closeScope();
 	prueba->print();
 	return 0;
 }
