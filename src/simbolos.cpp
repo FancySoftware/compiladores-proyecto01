@@ -2,6 +2,7 @@
 #include <unordered_map>
 #include <string>
 #include <vector>
+#include <assert.h>
 
 using namespace std;
 
@@ -46,9 +47,10 @@ public:
 
 	/* Funcion para buscar un elemento en la tabla de simbolos*/
 	Elemento* lookup(string name){
-		for( it = vector_tablas.begin(); it != vector_tablas.end(); ++it) {
-			unordered_map<string, Elemento> tabla = *it;
-			unordered_map<string,Elemento>::iterator local_it = tabla.begin();
+
+		for( it = vector_tablas.end(); it != vector_tablas.begin(); --it) {
+			unordered_map<string,Elemento> tabla = *it;
+			unordered_map<string,Elemento>::iterator local_it;		
 			for ( local_it = tabla.begin(); local_it!= tabla.end(); ++local_it ){
 				if(local_it->first == name){
 					Elemento temp = local_it->second;
@@ -56,10 +58,18 @@ public:
 					cout << "lo encontre";
 					return aux;
 				}
-			}
-      	}
+			}			
+      	}      	
 		cout<< "CASO DE NULL";
 		return NULL;		
+	}
+
+	Elemento* encontrarElemento(string name, unordered_map<string,Elemento> tabla){
+		unordered_map<string,Elemento>::iterator it;
+		for(auto it=tabla.begin();it!=tabla.end();++it){
+			cout << "iterando tabla";
+		}
+		return NULL;
 	}
 
 	/* funcion que inserta dentro de la tabla de simbolos del alcance actual un elemento*/
@@ -132,7 +142,7 @@ int main(){
 	prueba->print();
 	prueba->lookup("nombre");
 	cout<< "\n";
-	prueba->lookup("equis");
+	prueba->lookup("nuevo elemento");
 	cout<< "\n";
 	prueba->closeScope();
 	prueba->print();
