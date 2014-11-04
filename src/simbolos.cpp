@@ -48,10 +48,10 @@ public:
 	/* Funcion para buscar un elemento en la tabla de simbolos*/
 	Elemento* lookup(string name){
 
-		for( it = vector_tablas.end(); it != vector_tablas.begin(); --it) {
+		for( it = vector_tablas.begin(); it != vector_tablas.end(); it++) {
 			unordered_map<string,Elemento> tabla = *it;
 			unordered_map<string,Elemento>::iterator local_it;		
-			for ( local_it = tabla.begin(); local_it!= tabla.end(); ++local_it ){
+			for ( local_it = tabla.begin(); local_it != tabla.end(); ++local_it ){
 				if(local_it->first == name){
 					Elemento temp = local_it->second;
 					Elemento *aux = &temp;
@@ -74,7 +74,7 @@ public:
 
 	/* funcion que inserta dentro de la tabla de simbolos del alcance actual un elemento*/
 	virtual void insert(string name, Elemento record){
-		vector_tablas.back().insert({name,record});
+		vector_tablas.front().insert({name,record});
 	}
 
 	/* Funcion para abrir un nuevo alcance en la tabla de simbolos */
@@ -84,21 +84,21 @@ public:
 		tabla_actual = tabla_nva;
 		// Agregamos la nueva tabla del alcance a nuestro vector de tablas
 		it = vector_tablas.begin();
-		vector_tablas.push_back(tabla_nva);
+		vector_tablas.insert(vector_tablas.begin(), tabla_nva);
 	}
 
 	/* Cierra el alcance actual referido a la tabla de simbolos, regresa a un alcance exterior*/
 	void closeScope(){
 		alcance_actual -= 1;
 		vector_tablas.erase(vector_tablas.end());
-		tabla_actual = vector_tablas.back();
+		tabla_actual = vector_tablas.front();
 	}
 
 	/* Funcion que nos permite saber si name esta dentro del alcaance local, es decir el
 	mas interno hasta el momento*/
 	bool declaredLocally(string name){
 		bool declarado = false;
-		unordered_map<string,Elemento>  tabla = vector_tablas.back();
+		unordered_map<string,Elemento>  tabla = vector_tablas.front();
 		unordered_map<string,Elemento>::iterator it;
 		for(it = tabla.begin(); it!= tabla.end();++it){
 			if(it->first == name){
@@ -133,7 +133,6 @@ int main(){
 	prueba->insert("equis2", test);
 	prueba->insert("equis3", test);
 	prueba->insert("hola", test);
-	
 	cout <<prueba->declaredLocally("adios");
 	cout <<prueba->declaredLocally("equis");
 	cout <<"\n";
