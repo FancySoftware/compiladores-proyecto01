@@ -1,117 +1,146 @@
+#include <list>
+#include <vector>
+#include <string>
+#include "nodo.cpp"
+using namespace std;
+
+class FuncDefNode: public BlockNode {
+public:
+    FuncdefNode() {
+        BlockNode();
+    }
+};
+
+class VarargslistNode: public LNodeList {
+public:
+    VarargslistNode() {
+        LNodeList();
+    }
+};
+
+class AugassignNode: public BinNode {
+private:
+    int operacion;
+public:
+    AugassignNode(int op) {
+        BinNode();
+        operacion = op;
+    }
+};
+
+class PrintNode: public NodeList {
+public:
+    PrintNode() {
+        NodeList();
+    }
+};
+
+class DelNode: public NodeList {
+public:
+    DelNode() {
+        NodeList();
+    }
+};
+
+class PassNode: public LeafNode {
+public:
+    PassNode() {
+        LeafNode();
+    }
+};
+
+class BreakNode: public LeafNode {
+public:
+    BreakNode() {
+        LeafNode();
+    }
+};
+
+class ContinueNode: public LeafNode {
+public:
+    ContinueNode() {
+        LeafNode();
+    }
+};
+
+class ReturnNode: public NodeList {
+public:
+    ReturnNode() {
+        NodeList();
+    }
+};
+
+class GlobalNode: public NodeList {
+public:
+    GlobalNode() {
+        NodeList();
+    }
+};
+
+class ExecNode: public BlockNode {
+public:
+    ExecNode() {
+        BlockNode();
+    }
+};
+
+class IfNode: public BlockNode {
+public:
+    IfNode() {
+        BlockNode();
+    }
+};
+class WhileNode: public BlockNode {
+public:
+    WhileNode() {
+        BlockNode();
+    }
+};
+class ForNode: public BlockNode {
+public:
+    ForNode() {
+        BlockNode();
+    }
+};
+
+class SuiteNode: public BlockNode {
+public:
+    SuiteNode() {
+        BlockNode();
+    }
+};
+
+class TestNode: public LNodeList {
+public:
+    TestNode() {
+        LNodeList();
+    }
+};
+class AndNode: public LNodeList {
+public:
+    AndNode() {
+        LNodeList();
+    }
+};
+class NotNode: public LNodeList {
+public:
+    NotNode() {
+        LNodeList();
+    }
+};
+class ComparisonNode: public BinNode {
+private:
+    int comparacion;
+public:
+    ComparisonNode(int comp) {
+        BinNode();
+        comparacion = comp;
+    }
+};
+/*
 class ASTBuilder{
 public:
-	virtual void makeSiblings(Node* n, Node* ns)=0;
-	virtual Node* bPlusNode() = 0;
-	virtual Node* blFNode() =0;
 
-
-	Node* bPlusNode(){
-		return new PlusNode;
-	}
-
-	Node* blFNode(){
-		return new IFNode();
-	}
-
-    Node* bErrorNode() {
-        return ErrorNode();
-    }
-    Node* bFile_inputNode() {
-        return File_inputNode();
-    }
-    Node* bFuncdefNode() {
-        return FuncdefNode();
-    }
-    Node* bParametersNode() {
-        return ParametersNode();
-    }
-    Node* bVarargslistNode() {
-        return VarargslistNode();
-    }
-    Node* bFpdefNode() {
-        return FpdefNode();
-    }
-    Node* bFplistNode() {
-        return FplistNode();
-    }
-    Node* bStmtNode() {
-        return StmtNode();
-    }
-    Node* bSimple_stmtNode() {
-        return Simple_stmtNode();
-    }
-    Node* bSmall_stmtNode() {
-        return Small_stmtNode();
-    }
-    Node* bExpr_stmtNode() {
-        return Expr_stmtNode();
-    }
-    Node* bAugassignNode() {
-        return AugassignNode();
-    }
-    Node* bPrint_stmtNode() {
-        return Print_stmtNode();
-    }
-    Node* bDel_stmtNode() {
-        return Del_stmtNode();
-    }
-    Node* bPass_stmtNode() {
-        return Pass_stmtNode();
-    }
-    Node* bFlow_stmtNode() {
-        return Flow_stmtNode();
-    }
-    Node* bBreak_stmtNode() {
-        return Break_stmtNode();
-    }
-    Node* bContinue_stmtNode() {
-        return Continue_stmtNode();
-    }
-    Node* bReturn_stmtNode() {
-        return Return_stmtNode();
-    }
-    Node* bRaise_stmtNode() {
-        return Raise_stmtNode();
-    }
-    Node* bGlobal_stmtNode() {
-        return Global_stmtNode();
-    }
-    Node* bTemp2Node() {
-        return Temp2Node();
-    }
-    Node* bExec_stmtNode() {
-        return Exec_stmtNode();
-    }
-    Node* bCompound_stmtNode() {
-        return Compound_stmtNode();
-    }
-    Node* bIf_stmtNode() {
-        return If_stmtNode();
-    }
-    Node* bWhile_stmtNode() {
-        return While_stmtNode();
-    }
-    Node* bFor_stmtNode() {
-        return For_stmtNode();
-    }
-    Node* bSuiteNode() {
-        return SuiteNode();
-    }
-    Node* bTestNode() {
-        return TestNode();
-    }
-    Node* bAnd_testNode() {
-        return And_testNode();
-    }
-    Node* bNot_testNode() {
-        return Not_testNode();
-    }
-    Node* bComparisonNode() {
-        return ComparisonNode();
-    }
-    Node* bComp_opNode() {
-        return Comp_opNode();
-    }
     Node* bExprNode() {
         return ExprNode();
     }
@@ -196,4 +225,4 @@ public:
     Node* bTestlist1Node() {
         return Testlist1Node();
     }
-}
+}*/
