@@ -114,6 +114,7 @@ private:
     };
 public:
     hoja h;
+    LeafNode(){}
     LeafNode(float val){
         h.number = val;
     }
@@ -121,3 +122,4 @@ public:
         h.contenido = val;
     }
 };
+
