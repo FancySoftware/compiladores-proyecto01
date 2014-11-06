@@ -200,3 +200,87 @@ public:
         LeafNode(float num);
     }
 };
+
+class ASTBuilder
+{
+public:
+    ASTBuilder() {};
+    Node* bFuncDefNode(){
+        return new FuncDefNode();
+    }
+    Node* bVarargslistNode(){
+        return new VarargslistNode();
+    }
+    Node* bAugassignNode(){
+        return new AugassignNode();
+    }
+    Node* bPrintNode(){
+        return new PrintNode();
+    }
+    Node* bDelNode(){
+        return new DelNode();
+    }
+    Node* bPassNode(){
+        return new PassNode();
+    }
+    Node* bBreakNode(){
+        return new BreakNode();
+    }
+    Node* bContinueNode(){
+        return new ContinueNode();
+    }
+    Node* bReturnNode(){
+        return new ReturnNode();
+    }
+    Node* bGlobalNode(){
+        return new GlobalNode();
+    }
+    Node* bExecNode(){
+        return new ExecNode();
+    }
+    Node* bIfNode(){
+        return new IfNode();
+    }
+    Node* bWhileNode(){
+        return new WhileNode();
+    }
+    Node* bForNode(){
+        return new ForNode();
+    }
+    Node* bSuiteNode(){
+        return new SuiteNode();
+    }
+    Node* bTestNode(){
+        return new TestNode();
+    }
+    Node* bAndNode(){
+        return new AndNode();
+    }
+    Node* bNotNode(){
+        return new NotNode();
+    }
+    Node* bComparisonNode(){
+        return new ComparisonNode();
+    }
+    Node* bExprNode(){
+        return new ExprNode();
+    }
+    Node* bXorNode(){
+        return new XorNode();
+    }
+    Node* bAndNode(){
+        return new AndNode();
+    }
+    Node* bShiftNode(){
+        return new ShiftNode();
+    }
+    Node* bArithNode(){
+        return new ArithNode();
+    }
+    Node* bTermNode(){
+        return new TermNode();
+    }
+    Node* bFactorNode(){
+        return new FactorNode();
+    }
+};
