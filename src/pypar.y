@@ -1,6 +1,7 @@
 %error-verbose
 %code requires {
 	#include "patrones.cpp"
+	static ASTBuilder *builder = new ASTBuilder();
 }
 %{
 #define YYDEBUG 1
@@ -11,7 +12,8 @@ void yyerror(const char *s) { printf("error: %s\n", s); }
 %union {
 	int valorInt;
 	Node *nodo;
-	NodeList *lista;
+	LNodeList *lista;
+	BlockNode *bloque;
 }
 %debug
 %token NEWLINE DEF IDENTIFIER DEL PASS BREAK CONTINUE RETURN RAISE IMPORT FROM AS
@@ -23,11 +25,15 @@ void yyerror(const char *s) { printf("error: %s\n", s); }
 %token MAYORIGUAL MENORIGUAL MAYORMENOR DIFERENTE ORR ANDD NOTX MAS MENOS MOD DIV DIVDIV NEG CORDER
 %token CORIZQ TILDE LLAVEIZQ LLAVEDER
 %token NUMBER
+
+%type<lista> file_input parameters suite
+%type<nodo> stmt funcdef
+
 %%
 
 file_input:
-	|file_input NEWLINE
-	|file_input stmt
+	|file_input NEWLINE {$$ = $1;}
+	|file_input stmt {$1->addLChild(*$2); $$ = $1;}
 
 funcdef: DEF IDENTIFIER parameters PUNTOS suite
 parameters: PARIZQ PARDER
