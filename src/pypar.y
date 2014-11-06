@@ -1,10 +1,18 @@
 %error-verbose
+%code requires {
+	#include "patrones.cpp"
+}
 %{
 #define YYDEBUG 1
 #include <stdio.h>
 extern int yylex();
 void yyerror(const char *s) { printf("error: %s\n", s); }
 %}
+%union {
+	int valorInt;
+	Node *nodo;
+	NodeList *lista;
+}
 %debug
 %token NEWLINE DEF IDENTIFIER DEL PASS BREAK CONTINUE RETURN RAISE IMPORT FROM AS
 %token GLOBAL FOR IN WITH EXCEPT INDENT DEDENT LAMBDA OR AND NOT IS ELIF ELSE IF PRINT
