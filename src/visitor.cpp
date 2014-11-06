@@ -27,5 +27,7 @@ public:
 	virtual void visit(ArithNode){}
 	virtual void visit(TermNode){}
 	virtual void visit(FactorNode){}	
+protected:
+	NodeVisistor(){}
 };
 
