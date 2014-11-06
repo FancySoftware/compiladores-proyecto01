@@ -6,15 +6,13 @@ using namespace std;
 
 class FuncDefNode: public BlockNode {
 public:
-    FuncdefNode() {
-        BlockNode();
+    FuncDefNode() : BlockNode() {
     }
 };
 
 class VarargslistNode: public LNodeList {
 public:
-    VarargslistNode() {
-        LNodeList();
+    VarargslistNode() : LNodeList(){
     }
 };
 
@@ -22,114 +20,98 @@ class AugassignNode: public BinNode {
 private:
     int operacion;
 public:
-    AugassignNode(int op) {
-        BinNode();
+    AugassignNode(int op) : BinNode() {
         operacion = op;
     }
 };
 
 class PrintNode: public NodeList {
 public:
-    PrintNode() {
-        NodeList();
+    PrintNode() : NodeList(){
     }
 };
 
 class DelNode: public NodeList {
 public:
-    DelNode() {
-        NodeList();
+    DelNode() : NodeList(){
     }
 };
 
 class PassNode: public LeafNode {
 public:
-    PassNode() {
-        LeafNode();
+    PassNode() : LeafNode(){
     }
 };
 
 class BreakNode: public LeafNode {
 public:
-    BreakNode() {
-        LeafNode();
+    BreakNode() : LeafNode(){
     }
 };
 
 class ContinueNode: public LeafNode {
 public:
-    ContinueNode() {
-        LeafNode();
+    ContinueNode() : LeafNode(){
     }
 };
 
 class ReturnNode: public NodeList {
 public:
-    ReturnNode() {
-        NodeList();
+    ReturnNode() : NodeList(){
     }
 };
 
 class GlobalNode: public NodeList {
 public:
-    GlobalNode() {
-        NodeList();
+    GlobalNode() : NodeList(){
     }
 };
 
 class ExecNode: public BlockNode {
 public:
-    ExecNode() {
-        BlockNode();
+    ExecNode() : BlockNode(){
     }
 };
 
 class IfNode: public BlockNode {
 public:
-    IfNode() {
-        BlockNode();
+    IfNode() : BlockNode(){
     }
 };
 
 class WhileNode: public BlockNode {
 public:
-    WhileNode() {
-        BlockNode();
+    WhileNode() : BlockNode(){
     }
 };
 
 class ForNode: public BlockNode {
 public:
-    ForNode() {
-        BlockNode();
+    ForNode() : BlockNode(){
     }
 };
 
 class SuiteNode: public BlockNode {
 public:
-    SuiteNode() {
-        BlockNode();
+    SuiteNode() : BlockNode(){
     }
 };
 
 class TestNode: public LNodeList {
 public:
-    TestNode() {
-        LNodeList();
+    TestNode() : LNodeList(){
     }
 };
 
 class AndNode: public LNodeList {
 public:
-    AndNode() {
-        LNodeList();
+    AndNode() : LNodeList(){
     }
 };
 
 class NotNode: public LNodeList {
 public:
-    NotNode() {
-        LNodeList();
+    NotNode() : LNodeList(){
     }
 };
 
@@ -137,37 +119,26 @@ class ComparisonNode: public BinNode {
 private:
     int comparacion;
 public:
-    ComparisonNode(int comp) {
-        BinNode();
+    ComparisonNode(int comp) : BinNode(){
         comparacion = comp;
     }
 };
 
 class ExprNode: public BinNode{
 public:
-    ExprNode(){
-        BinNode();
+    ExprNode(): BinNode(){
     }
 };
 
 class XorNode: public BinNode{
 public:
-    XorNode(){
-        BinNode();
-    }
-};
-
-class AndNode: public BinNode{
-public:
-    AndNode(){
-        BinNode();
+    XorNode(): BinNode(){
     }
 };
 
 class ShiftNode: public BinNode{
 public:
-    ShiftNode(){
-        BinNode();
+    ShiftNode(): BinNode(){
     }
 };
 
@@ -175,8 +146,7 @@ class ArithNode: public BinNode {
 private:
     int operacion;
 public:
-    ArithNode(int op) {
-        BinNode();
+    ArithNode(int op) : BinNode(){
         operacion = op;
     }
 };
@@ -185,19 +155,16 @@ class TermNode: public BinNode {
 private:
     int operacion;
 public:
-    TermNode(int op) {
-        BinNode();
+    TermNode(int op) : BinNode(){
         operacion = op;
     }
 };
 
 class FactorNode: public LeafNode {
 public:
-    FactorNode() {
-        LeafNode();
+    FactorNode() : LeafNode(){
     }
-    FactorNode(float num) {
-        LeafNode(float num);
+    FactorNode(float num) : LeafNode(num){
     }
 };
 
@@ -208,16 +175,16 @@ public:
     Node* bFuncDefNode(){
         return new FuncDefNode();
     }
-    Node* bVarargslistNode(){
+    NodeList* bVarargslistNode(){
         return new VarargslistNode();
     }
     Node* bAugassignNode(int op){
-        return new AugassignNode(int op);
+        return new AugassignNode(op);
     }
-    Node* bPrintNode(){
+    NodeList* bPrintNode(){
         return new PrintNode();
     }
-    Node* bDelNode(){
+    NodeList* bDelNode(){
         return new DelNode();
     }
     Node* bPassNode(){
@@ -229,10 +196,10 @@ public:
     Node* bContinueNode(){
         return new ContinueNode();
     }
-    Node* bReturnNode(){
+    NodeList* bReturnNode(){
         return new ReturnNode();
     }
-    Node* bGlobalNode(){
+    NodeList* bGlobalNode(){
         return new GlobalNode();
     }
     Node* bExecNode(){
@@ -250,17 +217,17 @@ public:
     Node* bSuiteNode(){
         return new SuiteNode();
     }
-    Node* bTestNode(){
+    NodeList* bTestNode(){
         return new TestNode();
     }
-    Node* bAndNode(){
+    NodeList* bAndNode(){
         return new AndNode();
     }
-    Node* bNotNode(){
+    NodeList* bNotNode(){
         return new NotNode();
     }
     Node* bComparisonNode(int comp){
-        return new ComparisonNode(int comp);
+        return new ComparisonNode(comp);
     }
     Node* bExprNode(){
         return new ExprNode();
@@ -268,22 +235,19 @@ public:
     Node* bXorNode(){
         return new XorNode();
     }
-    Node* bAndNode(){
-        return new AndNode();
-    }
     Node* bShiftNode(){
         return new ShiftNode();
     }
-    Node* bArithNode(){
-        return new ArithNode();
+    Node* bArithNode(int op){
+        return new ArithNode(op);
     }
-    Node* bTermNode(){
-        return new TermNode();
+    Node* bTermNode(int op){
+        return new TermNode(op);
     }
     Node* bFactorNode(){
         return new FactorNode();
     }
     Node* bFactorNode(float val){
-        return new FactorNode(float val);
+        return new FactorNode(val);
     }
 };
