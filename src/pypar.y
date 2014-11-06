@@ -35,7 +35,7 @@ file_input:
 	|file_input NEWLINE {$$ = $1;}
 	|file_input stmt {$1->addLChild(*$2); $$ = $1;}
 
-funcdef: DEF IDENTIFIER parameters PUNTOS suite
+funcdef: DEF IDENTIFIER parameters PUNTOS suite {$$ = builder->bFuncDefNode();}
 parameters: PARIZQ PARDER
 		|PARIZQ varargslist PARDER
 
