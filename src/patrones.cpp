@@ -211,8 +211,8 @@ public:
     Node* bVarargslistNode(){
         return new VarargslistNode();
     }
-    Node* bAugassignNode(){
-        return new AugassignNode();
+    Node* bAugassignNode(int op){
+        return new AugassignNode(int op);
     }
     Node* bPrintNode(){
         return new PrintNode();
@@ -259,8 +259,8 @@ public:
     Node* bNotNode(){
         return new NotNode();
     }
-    Node* bComparisonNode(){
-        return new ComparisonNode();
+    Node* bComparisonNode(int comp){
+        return new ComparisonNode(int comp);
     }
     Node* bExprNode(){
         return new ExprNode();
@@ -282,5 +282,8 @@ public:
     }
     Node* bFactorNode(){
         return new FactorNode();
+    }
+    Node* bFactorNode(float val){
+        return new FactorNode(float val);
     }
 };
