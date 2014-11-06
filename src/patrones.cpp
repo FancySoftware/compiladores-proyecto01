@@ -90,12 +90,14 @@ public:
         BlockNode();
     }
 };
+
 class WhileNode: public BlockNode {
 public:
     WhileNode() {
         BlockNode();
     }
 };
+
 class ForNode: public BlockNode {
 public:
     ForNode() {
@@ -116,18 +118,21 @@ public:
         LNodeList();
     }
 };
+
 class AndNode: public LNodeList {
 public:
     AndNode() {
         LNodeList();
     }
 };
+
 class NotNode: public LNodeList {
 public:
     NotNode() {
         LNodeList();
     }
 };
+
 class ComparisonNode: public BinNode {
 private:
     int comparacion;
@@ -137,92 +142,61 @@ public:
         comparacion = comp;
     }
 };
-/*
-class ASTBuilder{
-public:
 
-    Node* bExprNode() {
-        return ExprNode();
+class ExprNode: public BinNode{
+public:
+    ExprNode(){
+        BinNode();
     }
-    Node* bXor_exprNode() {
-        return Xor_exprNode();
+};
+
+class XorNode: public BinNode{
+public:
+    XorNode(){
+        BinNode();
     }
-    Node* bAnd_exprNode() {
-        return And_exprNode();
+};
+
+class AndNode: public BinNode{
+public:
+    AndNode(){
+        BinNode();
     }
-    Node* bShift_exprNode() {
-        return Shift_exprNode();
+};
+
+class ShiftNode: public BinNode{
+public:
+    ShiftNode(){
+        BinNode();
     }
-    Node* bArith_exprNode() {
-        return Arith_exprNode();
+};
+
+class ArithNode: public BinNode {
+private:
+    int operacion;
+public:
+    ArithNode(int op) {
+        BinNode();
+        operacion = op;
     }
-    Node* bTermNode() {
-        return TermNode();
+};
+
+class TermNode: public BinNode {
+private:
+    int operacion;
+public:
+    TermNode(int op) {
+        BinNode();
+        operacion = op;
     }
-    Node* bFactorNode() {
-        return FactorNode();
+};
+
+class FactorNode: public LeafNode {
+public:
+    FactorNode() {
+        LeafNode();
     }
-    Node* bPowerNode() {
-        return PowerNode();
+    FactorNode(float num) {
+        LeafNode(float num);
     }
-    Node* bAtomNode() {
-        return AtomNode();
-    }
-    Node* bListmakerNode() {
-        return ListmakerNode();
-    }
-    Node* bTestlist_compNode() {
-        return Testlist_compNode();
-    }
-    Node* bTrailerNode() {
-        return TrailerNode();
-    }
-    Node* bSubscriptlistNode() {
-        return SubscriptlistNode();
-    }
-    Node* bSubscriptNode() {
-        return SubscriptNode();
-    }
-    Node* bSliceopNode() {
-        return SliceopNode();
-    }
-    Node* bExprlistNode() {
-        return ExprlistNode();
-    }
-    Node* bTestlistNode() {
-        return TestlistNode();
-    }
-    Node* bTestlist_safeNode() {
-        return Testlist_safeNode();
-    }
-    Node* bDictorsetmakerNode() {
-        return DictorsetmakerNode();
-    }
-    Node* bArglistNode() {
-        return ArglistNode();
-    }
-    Node* bArgumentNode() {
-        return ArgumentNode();
-    }
-    Node* bList_iterNode() {
-        return List_iterNode();
-    }
-    Node* bList_forNode() {
-        return List_forNode();
-    }
-    Node* bList_ifNode() {
-        return List_ifNode();
-    }
-    Node* bComp_iterNode() {
-        return Comp_iterNode();
-    }
-    Node* bComp_forNode() {
-        return Comp_forNode();
-    }
-    Node* bComp_ifNode() {
-        return Comp_ifNode();
-    }
-    Node* bTestlist1Node() {
-        return Testlist1Node();
-    }
-}*/
+};
