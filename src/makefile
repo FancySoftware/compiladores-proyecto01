@@ -1,4 +1,4 @@
-all: proyecto_01 run
+all: proyecto_01
 
 proyecto_01: bison flex pila keyword
 	g++ pila.o keyword.o pylex.cpp pypar.cpp -o pylex

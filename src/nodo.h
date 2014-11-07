@@ -91,6 +91,9 @@ class INode:public Node{
     INode(int n){
         hijos = new VNodeList(n);
     }
+    INode(NodeList *lista) {
+        hijos = lista;
+    }
 
  };
 
@@ -117,6 +120,13 @@ private:
 public:
     BlockNode(){
         hijos = new INode();
+    }
+    void setLChild(Node arg){
+        hijos->setLChild(arg);
+    }
+
+    void setFChild(Node arg){
+        hijos->setFChild(arg);
     }
 };
 /* Nodo hoja para guardar valores*/

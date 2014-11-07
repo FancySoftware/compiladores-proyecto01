@@ -8,13 +8,22 @@ using namespace std;
 
 class FuncDefNode: public BlockNode {
 public:
-    FuncDefNode() : BlockNode() {
+    FuncDefNode(Node args, Node suite) : BlockNode() {
+        setFChild(args);
+        setLChild(suite);
     }
 };
 
 class VarargslistNode: public LNodeList {
 public:
-    VarargslistNode() : LNodeList(){
+    VarargslistNode(Node fpdef, Node aux4) : LNodeList(){
+        addLChild(fpdef);
+        addLChild(aux4);
+    }
+    VarargslistNode(Node fpdef, Node test, Node aux4) : LNodeList(){
+        addLChild(fpdef);
+        addLChild(test);
+        addLChild(aux4);
     }
 };
 
@@ -179,11 +188,17 @@ public:
 class ASTBuilder{
 public:
     ASTBuilder() {};
-    Node* bFuncDefNode(){
-        return new FuncDefNode();
+    Node* bToNode(NodeList* lista) {
+        return new INode(lista);
     }
-    NodeList* bVarargslistNode(){
-        return new VarargslistNode();
+    Node* bFuncDefNode(Node args, Node suite){
+        return new FuncDefNode(args,suite);
+    }
+    NodeList* bVarargslistNode(NodeList *fpdef, NodeList *aux4){
+        return new VarargslistNode(*bToNode(fpdef),*bToNode(aux4));
+    }
+    NodeList* bVarargslistNode(NodeList *fpdef, NodeList *test, NodeList *aux4){
+        return new VarargslistNode(*bToNode(fpdef),*bToNode(test),*bToNode(aux4));
     }
     Node* bAugassignNode(int op){
         return new AugassignNode(op);
