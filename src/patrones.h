@@ -4,13 +4,81 @@
 #include <vector>
 #include <string>
 #include "nodo.h"
+#include <iostream>
+#include <typeinfo>
+#include "simbolos.cpp"
 using namespace std;
+
+Simbolo* tabla_simbolos = new Simbolo();
+
+class FuncDefNode;
+class VarargslistNode;
+class AugassignNode;
+class PrintNode;
+class DelNode;
+class PassNode;
+class BreakNode;
+class ContinueNode;
+class ReturnNode;
+class GlobalNode;
+class ExecNode;
+class IfNode;
+class WhileNode;
+class ForNode;
+class SuiteNode;
+class TestNode;
+class AndNode;
+class NotNode;
+class ComparisonNode;
+class ExprNode;
+class XorNode;
+class ShiftNode;
+class ArithNode;
+class TermNode;
+class FactorNode;    
+class IntNode;
+
+class Visitor{
+public:
+    virtual void visit(FuncDefNode*);
+    virtual void visit(VarargslistNode*);
+    virtual void visit(AugassignNode*);
+    virtual void visit(PrintNode*);
+    virtual void visit(DelNode*);
+    virtual void visit(PassNode*);
+    virtual void visit(BreakNode*);
+    virtual void visit(ContinueNode*);
+    virtual void visit(ReturnNode*);
+    virtual void visit(GlobalNode*);
+    virtual void visit(ExecNode*);
+    virtual void visit(IfNode*);
+    virtual void visit(WhileNode*);
+    virtual void visit(ForNode*);
+    virtual void visit(SuiteNode*);
+    virtual void visit(TestNode*);
+    virtual void visit(AndNode*);
+    virtual void visit(NotNode*);
+    virtual void visit(ComparisonNode*);
+    virtual void visit(ExprNode*);
+    virtual void visit(XorNode*);
+    virtual void visit(ShiftNode*);
+    virtual void visit(ArithNode*);
+    virtual void visit(TermNode*);
+    virtual void visit(FactorNode*);    
+    virtual void visit(IntNode*);
+protected:
+    Visitor(){}
+};
+
 
 class FuncDefNode: public BlockNode {
 public:
     FuncDefNode(Node args, Node suite) : BlockNode() {
         setFChild(args);
         setLChild(suite);
+    }
+    virtual void accept(Visitor& v){
+        v.visit(this);
     }
 };
 
@@ -25,6 +93,9 @@ public:
         addLChild(test);
         addLChild(aux4);
     }
+    virtual void accept(Visitor& v){
+        v.visit(this);
+    }
 };
 
 class AugassignNode: public BinNode {
@@ -34,11 +105,17 @@ public:
     AugassignNode(int op) : BinNode() {
         operacion = op;
     }
+    virtual void accept(Visitor& v){
+        v.visit(this);
+    }
 };
 
 class PrintNode: public NodeList {
 public:
     PrintNode() : NodeList(){
+    }
+    virtual void accept(Visitor& v){
+        v.visit(this);
     }
 };
 
@@ -46,11 +123,17 @@ class DelNode: public NodeList {
 public:
     DelNode() : NodeList(){
     }
+    virtual void accept(Visitor& v){
+        v.visit(this);
+    }
 };
 
 class PassNode: public LeafNode {
 public:
     PassNode() : LeafNode(){
+    }
+    virtual void accept(Visitor& v){
+        v.visit(this);
     }
 };
 
@@ -58,11 +141,17 @@ class BreakNode: public LeafNode {
 public:
     BreakNode() : LeafNode(){
     }
+    virtual void accept(Visitor& v){
+        v.visit(this);
+    }
 };
 
 class ContinueNode: public LeafNode {
 public:
     ContinueNode() : LeafNode(){
+    }
+    virtual void accept(Visitor& v){
+        v.visit(this);
     }
 };
 
@@ -70,11 +159,17 @@ class ReturnNode: public NodeList {
 public:
     ReturnNode() : NodeList(){
     }
+    virtual void accept(Visitor& v){
+        v.visit(this);
+    }
 };
 
 class GlobalNode: public NodeList {
 public:
     GlobalNode() : NodeList(){
+    }
+    virtual void accept(Visitor& v){
+        v.visit(this);
     }
 };
 
@@ -82,11 +177,17 @@ class ExecNode: public BlockNode {
 public:
     ExecNode() : BlockNode(){
     }
+    virtual void accept(Visitor& v){
+        v.visit(this);
+    }
 };
 
 class IfNode: public BlockNode {
 public:
     IfNode() : BlockNode(){
+    }
+    virtual void accept(Visitor& v){
+        v.visit(this);
     }
 };
 
@@ -94,11 +195,17 @@ class WhileNode: public BlockNode {
 public:
     WhileNode() : BlockNode(){
     }
+    virtual void accept(Visitor& v){
+        v.visit(this);
+    }
 };
 
 class ForNode: public BlockNode {
 public:
     ForNode() : BlockNode(){
+    }
+    virtual void accept(Visitor& v){
+        v.visit(this);
     }
 };
 
@@ -106,11 +213,17 @@ class SuiteNode: public BlockNode {
 public:
     SuiteNode() : BlockNode(){
     }
+    virtual void accept(Visitor& v){
+        v.visit(this);
+    }
 };
 
 class TestNode: public LNodeList {
 public:
     TestNode() : LNodeList(){
+    }
+    virtual void accept(Visitor& v){
+        v.visit(this);
     }
 };
 
@@ -118,11 +231,17 @@ class AndNode: public LNodeList {
 public:
     AndNode() : LNodeList(){
     }
+    virtual void accept(Visitor& v){
+        v.visit(this);
+    }
 };
 
 class NotNode: public LNodeList {
 public:
     NotNode() : LNodeList(){
+    }
+    virtual void accept(Visitor& v){
+        v.visit(this);
     }
 };
 
@@ -133,11 +252,17 @@ public:
     ComparisonNode(int comp) : BinNode(){
         comparacion = comp;
     }
+    virtual void accept(Visitor& v){
+        v.visit(this);
+    }
 };
 
 class ExprNode: public BinNode{
 public:
     ExprNode(): BinNode(){
+    }
+    virtual void accept(Visitor& v){
+        v.visit(this);
     }
 };
 
@@ -145,11 +270,17 @@ class XorNode: public BinNode{
 public:
     XorNode(): BinNode(){
     }
+    virtual void accept(Visitor& v){
+        v.visit(this);
+    }
 };
 
 class ShiftNode: public BinNode{
 public:
     ShiftNode(): BinNode(){
+    }
+    virtual void accept(Visitor& v){
+        v.visit(this);
     }
 };
 
@@ -160,6 +291,12 @@ public:
     ArithNode(int op) : BinNode(){
         operacion = op;
     }
+    virtual void accept(Visitor& v){
+        v.visit(this);
+    }
+    float getOperacion(){
+        return operacion;
+    }
 };
 
 class TermNode: public BinNode {
@@ -169,19 +306,40 @@ public:
     TermNode(int op) : BinNode(){
         operacion = op;
     }
+    virtual void accept(Visitor& v){
+        v.visit(this);
+    }
+    int getOperacion(){
+        return operacion;
+    }
 };
 
 class FactorNode: public LeafNode {
 public:
+    float valor;
     FactorNode() : LeafNode(){
     }
     FactorNode(float num) : LeafNode(num){
+        valor = num;
     }
+    virtual void accept(Visitor& v){
+        v.visit(this);
+    }
+    
 };
 
 class IntNode:public LeafNode{
+
 public:
+    int valor;
     IntNode(int val): LeafNode(val){
+        valor = val;
+    }
+    virtual void accept(Visitor& v){
+        v.visit(this);
+    }
+    int getValor(){
+        return valor;
     }
 };
 
@@ -276,4 +434,116 @@ public:
         return new IntNode(val);
     }
 };
+
+
+
+void Visitor::visit(FuncDefNode* n){
+    tabla_simbolos->openScope();
+}
+void Visitor::visit( AugassignNode* n){
+    //obtener el nombre del identificador
+    string name = "prueba";
+    if(tabla_simbolos->declaredLocally(name)){
+        cout<< "declarado";
+        Elemento *ref = tabla_simbolos->lookup(name);
+      /*
+        if(ref->tipo != n->SegundoElemento)
+            throw "no son del mismo tipo";  
+        */
+        //falta asociar al nodo la referencia al elemento
+    }else{
+        cout <<"agregamos a la tabla";
+        Elemento nuevo;
+        nuevo.alcance = tabla_simbolos->alcance_actual;
+        nuevo.nombre = name;
+        nuevo.tipo = "identificador";
+        tabla_simbolos->insert(name,nuevo);
+        //falta guarda en el nodo la referencia al elemento
+    }
+}
+void Visitor::visit( PrintNode* n){
+    /*
+    string identificador = n->identificador;
+    if(tabla_simbolos->declaredLocally(identificador)){
+        Elemento *ref = tabla_simbolos->lookup(identificador);
+        //asociar la referencia al nodo
+    }else{
+        throw "La variable no ha sido declarada"
+    }
+    */
+}
+class PrintVisitor:public Visitor{
+public:
+    void visit(FuncDefNode* n);
+    void visit( VarargslistNode* n);
+    void visit( AugassignNode* n);
+    void visit( PrintNode* n);
+    void visit( DelNode* n);
+    void visit( PassNode* n);
+    void visit( BreakNode* n);
+    void visit( ContinueNode* n);
+    void visit( ReturnNode* n);
+    void visit( GlobalNode* n);
+    void visit( ExecNode* n);
+    void visit( IfNode* n);
+    void visit( WhileNode* n);
+    void visit( ForNode* n);
+    void visit( SuiteNode* n);
+    void visit( TestNode* n);
+    void visit( AndNode* n);
+    void visit( NotNode* n);
+    void visit( ComparisonNode* n);
+    void visit( ExprNode* n);
+    void visit( XorNode* n);
+    void visit( ShiftNode* n);
+    void visit( ArithNode* n);
+    void visit( TermNode* n);
+    void visit( FactorNode* n);    
+    void visit( IntNode* n);
+};
+
+/*
+void PrintVisitor::visit(ReturnNode*n){
+    cout<<"(";
+    list<Node> *lista= (n->hijos.lista);
+    list<Node>::iterator it;
+    for(it=lista->begin();it != lista->end();++it){
+
+    }
+
+}
+*/x
+void PrintVisitor::visit(IntNode* n){
+    cout << "(" << n->valor <<")";
+}
+void PrintVisitor::visit(FactorNode*n){
+    cout <<"(" << n->valor<<")";
+}
+void PrintVisitor::visit(TermNode* n){
+    cout << "(" ;
+    if(n->getOperacion() == 1){
+        cout << "*";
+    }
+    if(n->getOperacion() == 2){
+        cout<<"/";
+    }
+//    PrintVisitor::visit(n->getLChild());
+//    PrintVisitor::visit(n->getFChild());
+    cout << ")";
+}
+
+void PrintVisitor::visit(ArithNode* n){
+    cout << "(" ;
+    if(n->getOperacion() == 1){
+        cout << "+";
+    }
+    if(n->getOperacion()==2){
+        cout<<"-";
+    }
+//  PrintVisitor::visit(n->getLChild());
+//  PrintVisitor::visit(n->getFChild());
+    cout << ")";    
+}
+
+
 #endif
