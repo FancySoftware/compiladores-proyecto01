@@ -31,3 +31,6 @@ protected:
 	NodeVisistor(){}
 };
 
+class PrintVisitor{
+
+};

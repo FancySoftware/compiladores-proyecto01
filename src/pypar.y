@@ -1,7 +1,6 @@
 %error-verbose
 %code requires {
 	#include "patrones.cpp"
-	static ASTBuilder *builder = new ASTBuilder();
 }
 %{
 #define YYDEBUG 1
@@ -9,11 +8,15 @@
 extern int yylex();
 void yyerror(const char *s) { printf("error: %s\n", s); }
 %}
+%{code
+	ASTBuilder *builder = new ASTBuilder();
+}
 %union {
 	int valorInt;
 	Node *nodo;
 	LNodeList *lista;
 	BlockNode *bloque;
+	LeafNode *hoja;
 }
 %debug
 %token NEWLINE DEF IDENTIFIER DEL PASS BREAK CONTINUE RETURN RAISE IMPORT FROM AS
