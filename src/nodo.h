@@ -3,7 +3,6 @@
 #include <list>
 #include <vector>
 #include <string>
-#include "nodo.h"
 using namespace std;
 
 

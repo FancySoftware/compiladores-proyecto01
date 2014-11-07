@@ -50,7 +50,7 @@ public:
 
 		for( it = vector_tablas.begin(); it != vector_tablas.end(); it++) {
 			unordered_map<string,Elemento> tabla = *it;
-			unordered_map<string,Elemento>::iterator local_it;		
+			unordered_map<string,Elemento>::iterator local_it;
 			for ( local_it = tabla.begin(); local_it != tabla.end(); ++local_it ){
 				if(local_it->first == name){
 					Elemento temp = local_it->second;
@@ -58,10 +58,10 @@ public:
 					cout << "lo encontre";
 					return aux;
 				}
-			}			
-      	}      	
+			}
+      	}
 		cout<< "CASO DE NULL";
-		return NULL;		
+		return NULL;
 	}
 
 	Elemento* encontrarElemento(string name, unordered_map<string,Elemento> tabla){
@@ -110,7 +110,7 @@ public:
 
 	/*Funcion para imprimir la tabla, usada para las pruebas*/
 	void print() {
-		
+
 		cout << "tam vector_tablas: " << vector_tablas.size() << endl;
 		for( it = vector_tablas.begin(); it != vector_tablas.end(); ++it) {
 			unordered_map<string, Elemento> for_print = *it;
@@ -119,11 +119,11 @@ public:
       			cout << " " << local_it->first;
       		cout << endl;
 		}
-		
+
 	}
 };
 
-int main(){
+/*int main(){
 	Simbolo *prueba = new Simbolo();
 	prueba->openScope();
 	struct Elemento test;
@@ -146,4 +146,4 @@ int main(){
 	prueba->closeScope();
 	prueba->print();
 	return 0;
-}
+}*/

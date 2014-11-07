@@ -6,10 +6,10 @@
 #include "nodo.h"
 #include <iostream>
 #include <typeinfo>
-#include "simbolos.cpp"
+#include "simbolos.h"
 using namespace std;
 
-Simbolo* tabla_simbolos = new Simbolo();
+static Simbolo* tabla_simbolos = new Simbolo();
 
 class FuncDefNode;
 class VarargslistNode;
@@ -35,7 +35,7 @@ class XorNode;
 class ShiftNode;
 class ArithNode;
 class TermNode;
-class FactorNode;    
+class FactorNode;
 class IntNode;
 
 class Visitor{
@@ -64,7 +64,7 @@ public:
     virtual void visit(ShiftNode*);
     virtual void visit(ArithNode*);
     virtual void visit(TermNode*);
-    virtual void visit(FactorNode*);    
+    virtual void visit(FactorNode*);
     virtual void visit(IntNode*);
 protected:
     Visitor(){}
@@ -325,7 +325,7 @@ public:
     virtual void accept(Visitor& v){
         v.visit(this);
     }
-    
+
 };
 
 class IntNode:public LeafNode{
@@ -448,7 +448,7 @@ void Visitor::visit( AugassignNode* n){
         Elemento *ref = tabla_simbolos->lookup(name);
       /*
         if(ref->tipo != n->SegundoElemento)
-            throw "no son del mismo tipo";  
+            throw "no son del mismo tipo";
         */
         //falta asociar al nodo la referencia al elemento
     }else{
@@ -472,34 +472,35 @@ void Visitor::visit( PrintNode* n){
     }
     */
 }
+
 class PrintVisitor:public Visitor{
 public:
-    void visit(FuncDefNode* n);
-    void visit( VarargslistNode* n);
-    void visit( AugassignNode* n);
-    void visit( PrintNode* n);
-    void visit( DelNode* n);
-    void visit( PassNode* n);
-    void visit( BreakNode* n);
-    void visit( ContinueNode* n);
-    void visit( ReturnNode* n);
-    void visit( GlobalNode* n);
-    void visit( ExecNode* n);
-    void visit( IfNode* n);
-    void visit( WhileNode* n);
-    void visit( ForNode* n);
-    void visit( SuiteNode* n);
-    void visit( TestNode* n);
-    void visit( AndNode* n);
-    void visit( NotNode* n);
-    void visit( ComparisonNode* n);
-    void visit( ExprNode* n);
-    void visit( XorNode* n);
-    void visit( ShiftNode* n);
-    void visit( ArithNode* n);
-    void visit( TermNode* n);
-    void visit( FactorNode* n);    
-    void visit( IntNode* n);
+    virtual void visit(FuncDefNode* n);
+    virtual void visit( VarargslistNode* n);
+    virtual void visit( AugassignNode* n);
+    virtual void visit( PrintNode* n);
+    virtual void visit( DelNode* n);
+    virtual void visit( PassNode* n);
+    virtual void visit( BreakNode* n);
+    virtual void visit( ContinueNode* n);
+    virtual void visit( ReturnNode* n);
+    virtual void visit( GlobalNode* n);
+    virtual void visit( ExecNode* n);
+    virtual void visit( IfNode* n);
+    virtual void visit( WhileNode* n);
+    virtual void visit( ForNode* n);
+    virtual void visit( SuiteNode* n);
+    virtual void visit( TestNode* n);
+    virtual void visit( AndNode* n);
+    virtual void visit( NotNode* n);
+    virtual void visit( ComparisonNode* n);
+    virtual void visit( ExprNode* n);
+    virtual void visit( XorNode* n);
+    virtual void visit( ShiftNode* n);
+    virtual void visit( ArithNode* n);
+    virtual void visit( TermNode* n);
+    virtual void visit( FactorNode* n);
+    virtual void visit( IntNode* n);
 };
 
 /*
@@ -512,7 +513,7 @@ void PrintVisitor::visit(ReturnNode*n){
     }
 
 }
-*/x
+*/
 void PrintVisitor::visit(IntNode* n){
     cout << "(" << n->valor <<")";
 }
@@ -542,7 +543,7 @@ void PrintVisitor::visit(ArithNode* n){
     }
 //  PrintVisitor::visit(n->getLChild());
 //  PrintVisitor::visit(n->getFChild());
-    cout << ")";    
+    cout << ")";
 }
 
 
