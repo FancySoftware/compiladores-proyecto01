@@ -1,6 +1,7 @@
 %error-verbose
-%code requires {
-	#include "patrones.cpp"
+
+%code requires{
+#include "patrones.h"
 }
 %{
 #define YYDEBUG 1
@@ -8,15 +9,14 @@
 extern int yylex();
 void yyerror(const char *s) { printf("error: %s\n", s); }
 %}
-%{code
+%code{
 	ASTBuilder *builder = new ASTBuilder();
 }
-%union {
-	int valorInt;
-	Node *nodo;
-	LNodeList *lista;
-	BlockNode *bloque;
-	LeafNode *hoja;
+%union{
+	int valorint;
+	Node* nodo;
+	LNodeList* lista;
+	BlockNode* bloque;
 }
 %debug
 %token NEWLINE DEF IDENTIFIER DEL PASS BREAK CONTINUE RETURN RAISE IMPORT FROM AS
@@ -28,19 +28,18 @@ void yyerror(const char *s) { printf("error: %s\n", s); }
 %token MAYORIGUAL MENORIGUAL MAYORMENOR DIFERENTE ORR ANDD NOTX MAS MENOS MOD DIV DIVDIV NEG CORDER
 %token CORIZQ TILDE LLAVEIZQ LLAVEDER
 %token NUMBER
-
-%type<lista> file_input parameters suite
+%type<lista> file_input 
 %type<nodo> stmt funcdef
 
 %%
 
-file_input:
-	|file_input NEWLINE {$$ = $1;}
-	|file_input stmt {$1->addLChild(*$2); $$ = $1;}
+file_input: 
+	|file_input NEWLINE {$$=$1;}
+	|file_input stmt {$1->addLChild(*$2);$$=$1;}
 
-funcdef: DEF IDENTIFIER parameters PUNTOS suite {$$ = builder->bFuncDefNode();}
+funcdef: DEF IDENTIFIER parameters PUNTOS suite {$$=builder->bFuncDefNode();}
 parameters: PARIZQ PARDER
-		|PARIZQ varargslist PARDER
+		|PARIZQ varargslist PARDER 
 
 varargslist: aux3 PORPOR IDENTIFIER
 			| aux3 POR IDENTIFIER COMA PORPOR IDENTIFIER
@@ -335,6 +334,7 @@ testlist1: test aux26
 
 %%
 int main(int argc, char *argv[]){
+
     extern FILE* yyin;
     yyin=fopen(argv[1],"r");
     int exito = yyparse();
