@@ -27,7 +27,7 @@ class XorNode;
 class ShiftNode;
 class ArithNode;
 class TermNode;
-class FactorNode;    
+class FactorNode;
 class IntNode;
 
 
@@ -59,7 +59,7 @@ public:
     void visit(ShiftNode*);
     void visit(ArithNode*);
     void visit(TermNode*);
-    void visit(FactorNode*);    
+    void visit(FactorNode*);
     void visit(IntNode*);
 };
 
@@ -184,6 +184,15 @@ class IfNode: public BlockNode {
 public:
     IfNode() : BlockNode(){
     }
+    IfNode(Node test, Node suite) : BlockNode() {
+        setLChild(test);
+        setLChild(suite);
+    }
+    IfNode(Node test, Node suite, Node suite_else) : BlockNode() {
+        setLChild(test);
+        setLChild(suite);
+        setLChild(suite_else);
+    }
     virtual void accept(Visitor& v){
         v.visit(this);
     }
@@ -193,6 +202,15 @@ class WhileNode: public BlockNode {
 public:
     WhileNode() : BlockNode(){
     }
+    WhileNode(Node test, Node suite) : BlockNode() {
+        setLChild(test);
+        setLChild(suite);
+    }
+    WhileNode(Node test, Node suite, Node suite_else) : BlockNode() {
+        setLChild(test);
+        setLChild(suite);
+        setLChild(suite_else);
+    }
     virtual void accept(Visitor& v){
         v.visit(this);
     }
@@ -201,6 +219,17 @@ public:
 class ForNode: public BlockNode {
 public:
     ForNode() : BlockNode(){
+    }
+    ForNode(Node exprlist, Node testlist, Node suite) : BlockNode() {
+        setLChild(exprlist);
+        setLChild(testlist);
+        setLChild(suite);
+    }
+    ForNode(Node exprlist, Node testlist, Node suite, Node suite_else) : BlockNode() {
+        setLChild(exprlist);
+        setLChild(testlist);
+        setLChild(suite);
+        setLChild(suite_else);
     }
     virtual void accept(Visitor& v){
         v.visit(this);
@@ -302,7 +331,7 @@ public:
     virtual void accept(Visitor& v){
         v.visit(this);
     }
-    
+
 };
 
 class FactorNode: public LeafNode {
@@ -349,8 +378,14 @@ public:
     NodeList* bGlobalNode();
     Node* bExecNode();
     Node* bIfNode();
+    Node* bIfNode(Node test, Node suite);
+    Node* bIfNode(Node test, Node suite, Node suite_else);
     Node* bWhileNode();
+    Node* bWhileNode(Node test, Node suite);
+    Node* bWhileNode(Node test, Node suite, Node suite_else);
     Node* bForNode();
+    Node* bForNode(Node exprlist, Node testlist, Node suite);
+    Node* bForNode(Node exprlist, Node testlist, Node suite, Node suite_else);
     Node* bSuiteNode();
     NodeList* bTestNode();
     NodeList* bAndNode();
@@ -392,7 +427,7 @@ class PrintVisitor:public Visitor{
     void visit( ShiftNode* );
     void visit( ArithNode* );
     void visit( TermNode* );
-    void visit( FactorNode* );    
+    void visit( FactorNode* );
     void visit( IntNode* );
 };
 

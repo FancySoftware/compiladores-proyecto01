@@ -28,8 +28,8 @@ void yyerror(const char *s) { printf("error: %s\n", s); }
 %token MAYORIGUAL MENORIGUAL MAYORMENOR DIFERENTE ORR ANDD NOTX MAS MENOS MOD DIV DIVDIV NEG CORDER
 %token CORIZQ TILDE LLAVEIZQ LLAVEDER
 %token NUMBER
-%type<lista> file_input varargslist aux3 aux4 fpdef fplist aux5 simple_stmt aux6 small_stmt expr_stmt aux7 augassign print_stmt aux8 del_stmt pass_stmt flow_stmt break_stmt continue_stmt return_stmt raise_stmt global_stmt temp2 exec_stmt compound_stmt if_stmt aux9 while_stmt for_stmt aux11 test aux13 and_test aux14 not_test comparison aux15 comp_op expr aux18 xor_expr aux19 and_expr aux20 shift_expr aux21 arith_expr aux22 term aux23 factor power aux24 atom aux25 listmaker aux26 testlist_comp trailer subscriptlist aux27 subscript sliceop exprlist aux28 testlist testlist_safe aux12 dictorsetmaker aux29 arglist aux30 argument list_iter list_for list_if comp_iter comp_for comp_if testlist1
-%type<nodo> stmt funcdef parameters suite
+%type<lista> file_input varargslist aux3 aux4 fpdef fplist aux5 simple_stmt aux6 small_stmt expr_stmt aux7 print_stmt aux8 del_stmt pass_stmt flow_stmt break_stmt continue_stmt return_stmt raise_stmt global_stmt temp2 exec_stmt compound_stmt aux9 aux11 test aux13 and_test aux14 not_test comparison aux15 aux21  power aux24 atom aux25 listmaker aux26 testlist_comp trailer subscriptlist aux27 subscript sliceop exprlist aux28 testlist testlist_safe aux12 dictorsetmaker aux29 arglist aux30 argument list_iter list_for list_if comp_iter comp_for comp_if testlist1
+%type<nodo> stmt funcdef parameters suite augassign if_stmt while_stmt for_stmt comp_op aux18 shift_expr and_expr aux19 xor_expr expr aux20 arith_expr aux22 term factor aux23
 
 %%
 
@@ -87,18 +87,18 @@ expr_stmt: testlist augassign testlist {$$=0;}
 aux7: {$$=0;}
 	|aux7 IGUAL testlist {$$=0;}
 
-augassign: MASIGUAL {$$=0;}
-		| MENOSIGUAL {$$=0;}
-		| PORIGUAL {$$=0;}
-		| ENTREIGUAL {$$=0;}
-		| MODULOIGUAL {$$=0;}
-		| AMPERIGUAL {$$=0;}
-		| ORIGUAL {$$=0;}
-		| NEGIGUAL {$$=0;}
-		| MENORMENORIGUAL {$$=0;}
-		| MAYORMAYORIGUAL {$$=0;}
-		| PORPORIGUAL {$$=0;}
-		| DIVDIVIGUAL {$$=0;}
+augassign: MASIGUAL {$$ = builder->bAugassignNode(MASIGUAL);}
+		| MENOSIGUAL {$$ = builder->bAugassignNode(MENOSIGUAL);}
+		| PORIGUAL {$$ = builder->bAugassignNode(PORIGUAL);}
+		| ENTREIGUAL {$$ = builder->bAugassignNode(ENTREIGUAL);}
+		| MODULOIGUAL {$$ = builder->bAugassignNode(MODULOIGUAL);}
+		| AMPERIGUAL {$$ = builder->bAugassignNode(AMPERIGUAL);}
+		| ORIGUAL {$$ = builder->bAugassignNode(ORIGUAL);}
+		| NEGIGUAL {$$ = builder->bAugassignNode(NEGIGUAL);}
+		| MENORMENORIGUAL {$$ = builder->bAugassignNode(MENORMENORIGUAL);}
+		| MAYORMAYORIGUAL {$$ = builder->bAugassignNode(MAYORMAYORIGUAL);}
+		| PORPORIGUAL {$$ = builder->bAugassignNode(PORPORIGUAL);}
+		| DIVDIVIGUAL {$$ = builder->bAugassignNode(DIVDIVIGUAL);}
 
 print_stmt: PRINT {$$=0;}
 			| PRINT test aux26 COMA {$$=0;}
@@ -110,16 +110,16 @@ print_stmt: PRINT {$$=0;}
 aux8: COMA test {$$=0;}
 	| aux8 COMA test {$$=0;}
 
-del_stmt: DEL exprlist {$$=0;}
+del_stmt: DEL exprlist {$$=$2;}
 pass_stmt: PASS {$$=0;}
-flow_stmt: break_stmt {$$=0;}
-		|continue_stmt {$$=0;}
-		|return_stmt {$$=0;}
-		|raise_stmt {$$=0;}
+flow_stmt: break_stmt {$$=$1;}
+		|continue_stmt {$$=$1;}
+		|return_stmt {$$=$1;}
+		|raise_stmt {$$=$1;}
 
 break_stmt: BREAK {$$=0;}
 continue_stmt: CONTINUE {$$=0;}
-return_stmt: RETURN testlist {$$=0;}
+return_stmt: RETURN testlist {$$=$2;}
 			|RETURN {$$=0;}
 
 raise_stmt: RAISE test COMA test COMA test {$$=0;}
@@ -140,17 +140,17 @@ compound_stmt: if_stmt {$$=0;}
 			| for_stmt {$$=0;}
 			| funcdef {$$=0;}
 
-if_stmt: IF test PUNTOS suite aux9 ELSE PUNTOS suite {$$=0;}
-		|IF test PUNTOS suite aux9 {$$=0;}
+if_stmt: IF test PUNTOS suite aux9 ELSE PUNTOS suite {$$=builder->bIfNode(*builder->bToNode($2), *$4, *$8);}
+		|IF test PUNTOS suite aux9 {$$=builder->bIfNode(*builder->bToNode($2), *$4);}
 aux9: {$$=0;}
 	|aux9 ELIF test PUNTOS suite {$$=0;}
 
 
-while_stmt: WHILE test PUNTOS suite ELSE PUNTOS suite {$$=0;}
-			|WHILE test PUNTOS suite {$$=0;}
+while_stmt: WHILE test PUNTOS suite ELSE PUNTOS suite {$$=builder->bWhileNode(*builder->bToNode($2), *$4, *$7);}
+			|WHILE test PUNTOS suite {$$=builder->bWhileNode(*builder->bToNode($2), *$4);}
 
-for_stmt: FOR exprlist IN testlist PUNTOS suite ELSE PUNTOS suite {$$=0;}
-		| FOR exprlist IN testlist PUNTOS suite {$$=0;}
+for_stmt: FOR exprlist IN testlist PUNTOS suite ELSE PUNTOS suite {$$=builder->bForNode(*builder->bToNode($2), *builder->bToNode($4), *$6, *$9);}
+		| FOR exprlist IN testlist PUNTOS suite {$$=builder->bForNode(*builder->bToNode($2), *builder->bToNode($4), *$6);}
 
 suite: simple_stmt {$$=0;}
 	| NEWLINE INDENT aux11 DEDENT {$$=0;}
@@ -175,67 +175,67 @@ comparison: expr aux15 {$$=0;}
 aux15: {$$=0;}
 	|aux15 comp_op expr {$$=0;}
 
-comp_op: MAYOR {$$=0;}
-	| MENOR {$$=0;}
-	| IGUALIGUAL {$$=0;}
-	| MAYORIGUAL {$$=0;}
-	| MENORIGUAL {$$=0;}
-	| MAYORMENOR {$$=0;}
-	| DIFERENTE {$$=0;}
-	| IN {$$=0;}
-	| NOT IN {$$=0;}
-	| IS {$$=0;}
-	| IS NOT {$$=0;}
+comp_op: MAYOR {$$=builder->bComparisonNode(MAYOR);}
+	| MENOR {$$=builder->bComparisonNode(MENOR);}
+	| IGUALIGUAL {$$=builder->bComparisonNode(IGUALIGUAL);}
+	| MAYORIGUAL {$$=builder->bComparisonNode(MAYORIGUAL);}
+	| MENORIGUAL {$$=builder->bComparisonNode(MENORIGUAL);}
+	| MAYORMENOR {$$=builder->bComparisonNode(MAYORMENOR);}
+	| DIFERENTE {$$=builder->bComparisonNode(DIFERENTE);}
+	| IN {$$=builder->bComparisonNode(IN);}
+	| NOT IN {$$=builder->bComparisonNode(IN);}
+	| IS {$$=builder->bComparisonNode(IS);}
+	| IS NOT {$$=builder->bComparisonNode(NOT);}
 
-expr: xor_expr aux18 {$$=0;}
+expr: xor_expr aux18 {$$=$1;}
 aux18: {$$=0;}
-	| aux18 ORR xor_expr {$$=0;}
+	| aux18 ORR xor_expr {$$=builder->bXorNode();}
 
-xor_expr: and_expr aux19 {$$=0;}
+xor_expr: and_expr aux19 {$$=$1;}
 aux19: {$$=0;}
-	|aux19 NOTX and_expr {$$=0;}
+	|aux19 NOTX and_expr {$$=builder->bToNode(builder->bAndNode());}
 
-and_expr: shift_expr aux20 {$$=0;}
+and_expr: shift_expr aux20 {$$=$1;}
 aux20: {$$=0;}
-	|aux20 ANDD shift_expr {$$=0;}
+	|aux20 ANDD shift_expr {$$=builder->bShiftNode();}
 
 shift_expr: arith_expr aux21 {$$=0;}
 aux21: {$$=0;}
 	|aux21 CORRIMIENTOIZQ arith_expr {$$=0;}
 	|aux21 CORRIMIENTODER arith_expr {$$=0;}
 
-arith_expr: term aux22 {$$=0;}
+arith_expr: term aux22 {$$=$1;}
 aux22: {$$=0;}
-	|aux22 MAS term {$$=0;}
-	|aux22 MENOS term {$$=0;}
+	|aux22 MAS term {$$=builder->bArithNode(MAS);}
+	|aux22 MENOS term {$$=builder->bArithNode(MENOS);}
 
 term: factor aux23 {$$=0;}
 aux23: {$$=0;}
-	| aux23 POR factor {$$=0;}
-	| aux23 DIV factor {$$=0;}
-	| aux23 MOD factor {$$=0;}
-	| aux23 DIVDIV factor {$$=0;}
+	| aux23 POR factor {$$=builder->bTermNode(POR);}
+	| aux23 DIV factor {$$=builder->bTermNode(DIV);}
+	| aux23 MOD factor {$$=builder->bTermNode(MOD);}
+	| aux23 DIVDIV factor {$$=builder->bTermNode(DIVDIV);}
 
-factor: MAS factor {$$=0;}
-	| MENOS factor {$$=0;}
-	| NEG factor {$$=0;}
-	| power {$$=0;}
+factor: MAS factor {$$=builder->bFactorNode();}
+	| MENOS factor {$$=builder->bFactorNode();}
+	| NEG factor {$$=builder->bFactorNode();}
+	| power {$$=builder->bFactorNode();}
 
 power: atom aux24 PORPOR factor {$$=0;}
 	| atom aux24 {$$=0;}
 aux24: {$$=0;}
 	|trailer {$$=0;}
 
-atom: PARIZQ testlist_comp PARDER {$$=0;}
+atom: PARIZQ testlist_comp PARDER {$$=$2;}
 	| PARIZQ PARDER {$$=0;}
-	| CORIZQ listmaker CORDER {$$=0;}
+	| CORIZQ listmaker CORDER {$$=$2;}
 	| CORIZQ CORDER {$$=0;}
-	| LLAVEIZQ dictorsetmaker LLAVEDER {$$=0;}
+	| LLAVEIZQ dictorsetmaker LLAVEDER {$$=$2;}
 	| LLAVEIZQ LLAVEDER {$$=0;}
-	| TILDE testlist1 TILDE {$$=0;}
+	| TILDE testlist1 TILDE {$$=$2;}
 	| IDENTIFIER {$$=0;}
 	| NUMBER {$$=0;}
-	| aux25 {$$=0;}
+	| aux25 {$$=$1;}
 
 aux25: STRING {$$=0;}
 	|aux25 STRING {$$=0;}

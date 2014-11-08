@@ -49,11 +49,29 @@ return new ExecNode();
 Node* ASTBuilder::bIfNode(){
 return new IfNode();
 }
+Node* ASTBuilder::bIfNode(Node test, Node suite){
+    return new IfNode(test, suite);
+}
+Node* ASTBuilder::bIfNode(Node test, Node suite, Node suite_else){
+    return new IfNode(test, suite, suite_else);
+}
 Node* ASTBuilder::bWhileNode(){
 return new WhileNode();
 }
+Node* ASTBuilder::bWhileNode(Node test, Node suite){
+    return new WhileNode(test, suite);
+}
+Node* ASTBuilder::bWhileNode(Node test, Node suite, Node suite_else){
+    return new WhileNode(test, suite, suite_else);
+}
 Node* ASTBuilder::bForNode(){
 return new ForNode();
+}
+Node* ASTBuilder::bForNode(Node exprlist, Node testlist, Node suite){
+    return new ForNode(exprlist, testlist, suite);
+}
+Node* ASTBuilder::bForNode(Node exprlist, Node testlist, Node suite, Node suite_else){
+    return new ForNode(exprlist, testlist, suite, suite_else);
 }
 Node* ASTBuilder::bSuiteNode(){
 return new SuiteNode();
@@ -118,5 +136,5 @@ void Visitor::visit(XorNode*){}
 void Visitor::visit(ShiftNode*){}
 void Visitor::visit(ArithNode*){}
 void Visitor::visit(TermNode*){}
-void Visitor::visit(FactorNode*){}    
+void Visitor::visit(FactorNode*){}
 void Visitor::visit(IntNode*){}
