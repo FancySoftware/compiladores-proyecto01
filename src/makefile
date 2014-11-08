@@ -1,7 +1,7 @@
 all: proyecto_01
 
 proyecto_01: bison flex pila keyword
-	g++ -std=c++0x pila.o keyword.o pylex.cpp pypar.cpp -o pylex
+	g++ -std=c++0x pila.o keyword.o pylex.cpp patrones.cpp nodo.cpp pypar.cpp -o pylex
 
 bison:
 	bison -dv pypar.y -o pypar.cpp

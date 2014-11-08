@@ -1,7 +1,7 @@
 %error-verbose
 
 %code requires{
-#include "patrones.h"
+#include "patrones.hpp"
 }
 %{
 #define YYDEBUG 1

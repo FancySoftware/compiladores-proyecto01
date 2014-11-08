@@ -6,7 +6,7 @@
 #include "nodo.h"
 #include <iostream>
 #include <typeinfo>
-#include "simbolos.h"
+#include "simbolos.hpp"
 using namespace std;
 
 static Simbolo* tabla_simbolos = new Simbolo();
@@ -435,7 +435,29 @@ public:
     }
 };
 
-
+     void Visitor::visit(VarargslistNode*){}
+     void Visitor::visit(DelNode*){}
+     void Visitor::visit(PassNode*){}
+     void Visitor::visit(BreakNode*){}
+     void Visitor::visit(ContinueNode*){}
+     void Visitor::visit(ReturnNode*){}
+     void Visitor::visit(GlobalNode*){}
+     void Visitor::visit(ExecNode*){}
+     void Visitor::visit(IfNode*){}
+     void Visitor::visit(WhileNode*){}
+     void Visitor::visit(ForNode*){}
+     void Visitor::visit(SuiteNode*){}
+     void Visitor::visit(TestNode*){}
+     void Visitor::visit(AndNode*){}
+     void Visitor::visit(NotNode*){}
+     void Visitor::visit(ComparisonNode*){}
+     void Visitor::visit(ExprNode*){}
+     void Visitor::visit(XorNode*){}
+     void Visitor::visit(ShiftNode*){}
+     void Visitor::visit(ArithNode*){}
+     void Visitor::visit(TermNode*){}
+     void Visitor::visit(FactorNode*){}
+     void Visitor::visit(IntNode*){}
 
 void Visitor::visit(FuncDefNode* n){
     tabla_simbolos->openScope();
