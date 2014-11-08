@@ -35,7 +35,7 @@ void yyerror(const char *s) { printf("error: %s\n", s); }
 
 file_input: {$$=0;}
 	|file_input NEWLINE {$$=$1;}
-	|file_input stmt {$1->setLeftChild(*$2);$$=$1;}
+	|file_input stmt {$$=$1;}
 
 funcdef: DEF IDENTIFIER parameters PUNTOS suite {$$=builder->bFuncDefNode(*$3,*$5);}
 parameters: PARIZQ PARDER {$$=0;}

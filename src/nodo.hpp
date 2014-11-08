@@ -72,7 +72,9 @@ class INode:public Node{
     INode(int n){
         hijos = new VNodeList(n);
     }
-
+    INode(NodeList* nuevos){
+        hijos = nuevos;
+    }
  };
 
 class BinNode: public INode{
