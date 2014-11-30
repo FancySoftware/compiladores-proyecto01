@@ -16,7 +16,7 @@ keyword: keyword.cpp
 	g++ -std=c++0x -c keyword.cpp
 
 clean:
-	rm pylex pylex.cpp *.o
+	rm pylex pylex.cpp *.o pypar.cpp pypar.hpp pypar.output
 
 run:
 	./pylex pyprueba.py
