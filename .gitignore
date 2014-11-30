@@ -1,3 +1,6 @@
 *.o
 pylex
 pylex.cpp
+pypar.cpp
+pypar.hpp
+pypar.output
