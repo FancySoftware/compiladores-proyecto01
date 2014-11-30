@@ -19,4 +19,4 @@ clean:
 	rm pylex pylex.cpp *.o
 
 run:
-	./pylex pyprueba1.py
+	./pylex pyprueba.py

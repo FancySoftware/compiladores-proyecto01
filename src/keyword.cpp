@@ -1,6 +1,6 @@
 #include <string>
 #include "pypar.hpp"
-#include "keyword.h"
+#include "keyword.hpp"
 using namespace std;
 
 yytokentype getTokenFromKeyword(string keyword){

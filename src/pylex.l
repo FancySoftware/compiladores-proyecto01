@@ -4,18 +4,18 @@
 #include <string>
 #include <locale>
 #include <stdlib.h>
+#include "pila.hpp"
 #include "pypar.hpp"
-#include "pila.h"
-#include "keyword.h"
+#include "keyword.hpp"
 
 int num_dedents = 0, num_indents = 0;
-std::locale loc;
-std::string toUpper(std::string);
-
 Pila pilaIndent;
+
+std::locale loc;
 std::string toUpper(std::string);
 void getIndents(std::string);
 void pseudo_main();
+
 %}
 %option debug
 %option noyywrap
@@ -56,10 +56,7 @@ KEYWORD (and|del|from|not|while|as|elif|global|or|with|assert|else|if|pass|yield
 IDENTIFIER [a-zA-Z|_][a-zA-Z0-9_]*
 
 OPERATION (":"|"("|")"|","|";"|"="|"**"|"*"|"+="|"-="|"*="|"/="|"\%="|"&="|"|="|"^="|"<<="|">>="|"**="|"//="|">>"|"<<"|"."|"exec"|">"|"<"|"=="|">="|"<="|"<>"|"!="|"|"|"&"|"^"|"+"|"-"|"\%"|"/"|"//"|"~"|"]"|"["|"`"|"{"|"}")
-
-SPECIALSTRING ("\""|"\t"|"\\"|"\r"|"\ ")
-STRINGITEM ([a-zA-Z0-9]|{SPECIALSTRING})
-STRING {STRINGITEM}*"\""
+STRING (\\.|[^"])*\"
 %%
 
 {COMMENT}
@@ -69,62 +66,78 @@ STRING {STRINGITEM}*"\""
 											pseudo_main();
 											BEGIN(Iniciado);
 										}
-<Iniciado><<EOF>> { static int once = 0; return (once = !once) ? NEWLINE : 0; }
+<Iniciado><<EOF>>   					{
+											getIndents(yytext);
+											if(num_dedents > 0) {
+												BEGIN(Dedent);
+											}
+											static int once = 0; return once++ ?0:NEWLINE;
+										}
 <Iniciado>{SPACE}
 <Iniciado>{COMMENT}
-<Iniciado>{NEWLINE}({SPACE}|{TAB})*{NEWLINE}
-<Iniciado>{NEWLINE}({SPACE}|{TAB})+ 	{
+<Iniciado>{NEWLINE}+({SPACE}|{TAB})+ 	{
 											getIndents(yytext);
 											if(num_dedents > 0) {
 												BEGIN(Dedent);
 											} else if(num_indents > 0) {
 												BEGIN(Indent);
 											}
+											std::cout <<"NEWLINE";
 											return NEWLINE;
 										}
-<Iniciado>{NEWLINE} 					{
-											getIndents("");
+<Iniciado>{NEWLINE}+ 					{
+											getIndents(yytext);
 											if(num_dedents > 0) {
 												BEGIN(Dedent);
 											} else if(num_indents > 0) {
 												BEGIN(Indent);
 											}
+											std::cout << "NEWLINE";
 											return NEWLINE;
 										}
-<Iniciado>{NUMBER}						return NUMBER;
-<Iniciado>{KEYWORD}						return getTokenFromKeyword(yytext);
-<Iniciado>{IDENTIFIER}					return IDENTIFIER;
+<Iniciado>{NUMBER}						{
+										yylval.num=atoi(yytext);
+										std::cout <<"NUMBER";
+										return NUMBER;
+										}
+<Iniciado>{KEYWORD}						std::cout << "KEYWORD"; return getTokenFromKeyword(yytext);
+<Iniciado>{IDENTIFIER}					std::cout << "IDENTIFIER"; return IDENTIFIER;
 <Iniciado>\"							BEGIN(String);
-<Iniciado>{OPERATION} 					return getTokenFromOperation(yytext);
-
+<Iniciado>{OPERATION} 					std::cout <<"OPERATION";return getTokenFromOperation(yytext);
+<String>(\\.|[^"])*\" 					{
+											yylval.str = strdup(yytext);
+											std::cout << "CADENA";
+											BEGIN(Iniciado);
+											return STRING;
+										}
+<String>{NEWLINE}						std::cout <<"\n\n ERROR CADENA NO TERMINADA\n"; exit(EXIT_FAILURE);
+<String>.								std::cout << "\n\n ERROR CADENA NO TERMINADA\n";exit(EXIT_FAILURE);
 <Dedent>. 								{
 											yyless(0);
 											num_dedents--;
 											if(num_dedents == 0) {
 												BEGIN(Iniciado);
 											}
+											std::cout <<"DEDENT";
 											return DEDENT;
 										}
+<Dedent><<EOF>>							{
+
+										num_dedents--;
+										if(num_dedents==0){
+											BEGIN(Iniciado);
+										}
+										std::cout <<"DEDENT";
+											return DEDENT;
+										}
+
 <Indent>. 								{
 											yyless(0);
 											num_indents--;
 											BEGIN(Iniciado);
+											std::cout << "INDENT";
 											return INDENT;
 										}
-
-<String>{STRING}						{
-											BEGIN(Iniciado);
-											return STRING;
-										}
-<String><<EOF>>							{
-											std::cout << "\n\n ERROR LA CADENA NO ESTA TERMINADA\n ";
-											exit(EXIT_FAILURE);
-										}
-<String>{NEWLINE}						{
-											std::cout << "\n\n ERROR LA CADENA NO ESTA TERMINADA\n ";
-											exit(EXIT_FAILURE);
-										}
-
 %%
 void pseudo_main() {
 	pilaIndent.push(0);
@@ -160,4 +173,3 @@ void getIndents(std::string espacios) {
 	}
 	return;
 }
-
