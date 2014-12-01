@@ -2,59 +2,25 @@
 #include <iostream>
 using namespace std;
 
-void Node::setFChild(Node n){
-	throw "Esta función no está definida para los nodos";
+BlockNode::BlockNode() : Node() {}
+void BlockNode::addChild(Node node) {
+    hijos.push_back(node);
+}
+vector<Node> BlockNode::getChilds() {
+    return hijos;
 }
 
-void Node::setLChild(Node n){
-	throw "Esta función no está definida para los nodos";
+OpNode::OpNode(int op) : BlockNode() {
+    this->op = op;
+}
+int OpNode::getOp() {
+    return op;
 }
 
-
-void LNodeList::addLChild(Node arg){
-    hijos.push_back(arg);
+LeafNode::LeafNode() : Node() {}
+LeafNode::LeafNode(float arg) : Node() {
+    h.num = arg;
 }
-
-void LNodeList::addFChild(Node arg){
-    hijos.push_front(arg);
-}
-  
-void LNodeList::setRightChild(Node node){
-    throw "operacion no valida";
-}
-
-void LNodeList::setLeftChild(Node node){
-    throw "operacion no valida";
-}
-
-void VNodeList::addFChild(Node arg){
-    hijos.insert(hijos.begin(),arg);
-}
-void VNodeList::addLChild(Node arg){
-    hijos.insert(hijos.end(),arg);
-}
-void VNodeList::setRightChild(Node arg){
-    hijos.back() = arg;
-}
-void VNodeList::setLeftChild(Node arg){
-    hijos.front() = arg;
-}
-Node VNodeList::getRightChild(){
-    return hijos.back();
-}
-Node VNodeList::getLeftChild(){
-    return hijos.front();
-}
-void BinNode::setLChild(Node arg){
-    hijos->setRightChild(arg);
-}
-
-void BinNode::setFChild(Node arg){
-    hijos->setLeftChild(arg);
-}
-Node BinNode::getLChild(){
-    hijos->getRightChild();
-}
-Node BinNode::getFChild(){
-    hijos->getLeftChild();
+LeafNode::LeafNode(string* arg) : Node() {
+    h.str = arg;
 }

@@ -101,7 +101,11 @@ STRING (\\.|[^"])*\"
 										return NUMBER;
 										}
 <Iniciado>{KEYWORD}						std::cout << "KEYWORD"; return getTokenFromKeyword(yytext);
-<Iniciado>{IDENTIFIER}					std::cout << "IDENTIFIER"; return IDENTIFIER;
+<Iniciado>{IDENTIFIER}					{
+										yylval.str = strdup(yytext);
+										std::cout << "IDENTIFIER";
+										return IDENTIFIER;
+										}
 <Iniciado>\"							BEGIN(String);
 <Iniciado>{OPERATION} 					std::cout <<"OPERATION";return getTokenFromOperation(yytext);
 <String>(\\.|[^"])*\" 					{

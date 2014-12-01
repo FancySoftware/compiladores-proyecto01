@@ -10,7 +10,6 @@ yytokentype getTokenFromKeyword(string keyword){
     if (keyword.compare("continue") == 0) return CONTINUE;
     if (keyword.compare("for") == 0) return FOR;
     if (keyword.compare("lambda") == 0) return LAMBDA;
-    if (keyword.compare("def") == 0) return DEF;
     if (keyword.compare("from") == 0) return FROM;
     if (keyword.compare("while") == 0) return WHILE;
     if (keyword.compare("and") == 0) return AND;
